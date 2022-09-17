@@ -1,0 +1,8 @@
+import 'package:flutter/material.dart';
+
+Color primaryColor = Color.fromRGBO(52, 12, 185, 1);
+Color headingColor = Colors.black;
+Color contentColor = Color.fromRGBO(126, 126, 126, 1);
+
+height(context) => MediaQuery.of(context).size.height / 100;
+width(context) => MediaQuery.of(context).size.width / 100;
