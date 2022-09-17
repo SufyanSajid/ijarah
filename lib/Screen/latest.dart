@@ -6,9 +6,9 @@ import 'package:provider/provider.dart';
 
 import '../Widget/appbar.dart';
 
-class NewLauncingScreen extends StatelessWidget {
-  static const routeName = 'new-launch';
-  const NewLauncingScreen({super.key});
+class LatestScreen extends StatelessWidget {
+  static const routeName = 'latest';
+  const LatestScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -73,7 +73,7 @@ class NewLauncingScreen extends StatelessWidget {
                         height: height(context) * 3,
                       ),
                       const Text(
-                        'New Launching',
+                        'Latest Properties',
                         style: TextStyle(
                             fontSize: 20, fontWeight: FontWeight.w600),
                       ),

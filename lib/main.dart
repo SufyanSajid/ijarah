@@ -7,8 +7,10 @@ import 'package:ijarah/Screen/Auth/sign_up.dart';
 import 'package:ijarah/Screen/Common/splash_screen.dart';
 import 'package:ijarah/Screen/Common/welcome.dart';
 import 'package:ijarah/Screen/homepage.dart';
+import 'package:ijarah/Screen/latest.dart';
 import 'package:ijarah/Screen/launcing.dart';
 import 'package:ijarah/Screen/onboarding/rent.dart';
+import 'package:ijarah/Screen/property_detail.dart';
 import 'package:provider/provider.dart';
 
 void main() {
@@ -34,13 +36,15 @@ class MyApp extends StatelessWidget {
         title: 'Ijarah',
         theme: ThemeData(),
         routes: {
-          '/': (ctx) => NewLauncingScreen(),
-          WelComeScreen.routeName: (ctx) => WelComeScreen(),
+          '/': (ctx) => Homepage(),
+          WelComeScreen.routeName: (ctx) => const WelComeScreen(),
           OnBoardingScreen.routeName: (ctx) => OnBoardingScreen(),
           LoginScreen.routeName: (ctx) => LoginScreen(),
           SignUpScreen.routename: (ctx) => SignUpScreen(),
           Homepage.routeName: (ctx) => Homepage(),
-          NewLauncingScreen.routeName: (ctx) => NewLauncingScreen()
+          NewLauncingScreen.routeName: (ctx) => const NewLauncingScreen(),
+          LatestScreen.routeName: (ctx) => const LatestScreen(),
+          PropertyDetailScreen.routeName: (ctx) => PropertyDetailScreen(),
         },
       ),
     );

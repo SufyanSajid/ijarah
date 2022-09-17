@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:ijarah/Models/appdata.dart';
 import 'package:ijarah/Models/property.dart';
 import 'package:ijarah/Screen/contact.dart';
+import 'package:ijarah/Screen/latest.dart';
+import 'package:ijarah/Screen/launcing.dart';
+import 'package:ijarah/Screen/property_detail.dart';
 import 'package:ijarah/Screen/settings.dart';
 import 'package:ijarah/Widget/appbar.dart';
 import 'package:ijarah/constant.dart';
@@ -72,7 +75,10 @@ class Homepage extends StatelessWidget {
                     ),
                     TitleRow(
                       title: 'New Launching',
-                      onTap: () {},
+                      onTap: () {
+                        Navigator.of(context)
+                            .pushNamed(NewLauncingScreen.routeName);
+                      },
                     ),
                     SizedBox(
                       height: height(context) * 2,
@@ -82,8 +88,15 @@ class Homepage extends StatelessWidget {
                       child: ListView.builder(
                         scrollDirection: Axis.horizontal,
                         itemCount: 4,
-                        itemBuilder: (ctx, index) => PropertyWidget(
-                          property: properties[index],
+                        itemBuilder: (ctx, index) => InkWell(
+                          onTap: () {
+                            Navigator.of(context).pushNamed(
+                                PropertyDetailScreen.routeName,
+                                arguments: properties[index]);
+                          },
+                          child: PropertyWidget(
+                            property: properties[index],
+                          ),
                         ),
                       ),
                     ),
@@ -101,7 +114,9 @@ class Homepage extends StatelessWidget {
                     ),
                     TitleRow(
                       title: 'Latest Properties',
-                      onTap: () {},
+                      onTap: () {
+                        Navigator.of(context).pushNamed(LatestScreen.routeName);
+                      },
                     ),
                     SizedBox(
                       height: height(context) * 2,
