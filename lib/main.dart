@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:ijarah/Models/appdata.dart';
+import 'package:ijarah/Models/filters.dart';
 import 'package:ijarah/Models/property.dart';
 import 'package:ijarah/Screen/Auth/login.dart';
 import 'package:ijarah/Screen/Auth/sign_up.dart';
@@ -30,6 +31,9 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider(
           create: (ctx) => Properties(),
+        ),
+        ChangeNotifierProvider(
+          create: (ctx) => Filters(),
         ),
       ],
       child: MaterialApp(
