@@ -101,12 +101,14 @@ class SettingScreen extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           ContactButton(
+                            onTap: () {},
                             icon: Icons.call,
                           ),
                           SizedBox(
                             width: width(context) * 2,
                           ),
                           ContactButton(
+                            onTap: () {},
                             icon: Icons.message,
                           ),
                         ],
@@ -162,20 +164,25 @@ class ContactButton extends StatelessWidget {
   ContactButton({
     Key? key,
     required this.icon,
+    required this.onTap,
   }) : super(key: key);
 
   IconData icon;
+  Function()? onTap;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-          color: Color.fromRGBO(238, 234, 255, 1),
-          borderRadius: BorderRadius.circular(5)),
-      padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-      child: Icon(
-        icon,
-        color: primaryColor,
+    return InkWell(
+      onTap: onTap,
+      child: Container(
+        decoration: BoxDecoration(
+            color: Color.fromRGBO(238, 234, 255, 1),
+            borderRadius: BorderRadius.circular(5)),
+        padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+        child: Icon(
+          icon,
+          color: primaryColor,
+        ),
       ),
     );
   }

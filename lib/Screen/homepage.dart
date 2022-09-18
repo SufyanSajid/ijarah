@@ -57,6 +57,7 @@ class _HomepageState extends State<Homepage> {
     launchProp = Provider.of<Properties>(context, listen: false).newLaunching;
     latestProp =
         Provider.of<Properties>(context, listen: false).latestProperties;
+    String banner = Provider.of<Properties>(context, listen: false).banner;
     categories = Provider.of<Properties>(context, listen: false).catgeories;
     Widget homePage = SafeArea(
       bottom: false,
@@ -145,12 +146,13 @@ class _HomepageState extends State<Homepage> {
                       SizedBox(
                         height: height(context) * 1.5,
                       ),
-                      Image.asset(
-                        'assets/images/banner.png',
-                        height: height(context) * 9,
-                        width: width(context) * 100,
-                        fit: BoxFit.cover,
-                      ),
+                      if (banner.isNotEmpty && isLoading == false)
+                        Image.network(
+                          banner,
+                          height: height(context) * 9,
+                          width: width(context) * 100,
+                          fit: BoxFit.contain,
+                        ),
                       SizedBox(
                         height: height(context) * 1.5,
                       ),

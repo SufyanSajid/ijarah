@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:ijarah/Models/agent.dart';
 
 import '../constant.dart';
 
@@ -30,6 +31,8 @@ class Property {
   String description;
   String date;
   String city;
+  String phone;
+  Agent agent;
   List<Feature> features;
 
   Property({
@@ -46,6 +49,8 @@ class Property {
     required this.description,
     required this.image,
     required this.date,
+    required this.agent,
+    required this.phone,
     required this.features,
   });
 }
@@ -62,6 +67,12 @@ class Properties with ChangeNotifier {
       bed: '4',
       bath: '2',
       address: 'Sargodha Punjab',
+      phone: '+923167550840',
+      agent: Agent(
+          id: '1',
+          name: 'Sufyan Sajid',
+          email: 'themssk@gmail.com',
+          phone: '+923167550840'),
       image:
           'https://3.imimg.com/data3/XJ/AK/MY-13479662/property-buyer-500x500.png',
       features: [],
@@ -82,9 +93,15 @@ class Properties with ChangeNotifier {
       price: 'PKR 2 Crore',
       bed: '6',
       bath: '4',
+      phone: '+923167550840',
       image:
           'https://3.imimg.com/data3/XJ/AK/MY-13479662/property-buyer-500x500.png',
       address: 'Sargodha Punjab',
+      agent: Agent(
+          id: '1',
+          name: 'Sufyan Sajid',
+          email: 'themssk@gmail.com',
+          phone: '+923167550840'),
       description:
           'Siraat Real Estate and Builders is an emerging real estate marketing, sales,and construction company. We are a network of professionally trained and specialized property consultants and advisors. We deal in almost all the leading projects of Pakistan and offers fair and dependable consultancy services.',
     ),
@@ -100,9 +117,15 @@ class Properties with ChangeNotifier {
       date: '',
       city: '',
       bath: '2',
+      phone: '+923167550840',
       image:
           'https://3.imimg.com/data3/XJ/AK/MY-13479662/property-buyer-500x500.png',
       address: 'Lahore Punjab',
+      agent: Agent(
+          id: '1',
+          name: 'Sufyan Sajid',
+          email: 'themssk@gmail.com',
+          phone: '+923167550840'),
       description:
           'Siraat Real Estate and Builders is an emerging real estate marketing, sales,and construction company. We are a network of professionally trained and specialized property consultants and advisors. We deal in almost all the leading projects of Pakistan and offers fair and dependable consultancy services.',
     ),
@@ -118,9 +141,15 @@ class Properties with ChangeNotifier {
       date: '',
       city: '',
       bath: '2',
+      phone: '+923167550840',
       image:
           'https://3.imimg.com/data3/XJ/AK/MY-13479662/property-buyer-500x500.png',
       address: 'Karachi Sindh',
+      agent: Agent(
+          id: '1',
+          name: 'Sufyan Sajid',
+          email: 'themssk@gmail.com',
+          phone: '+923167550840'),
       description:
           'Siraat Real Estate and Builders is an emerging real estate marketing, sales,and construction company. We are a network of professionally trained and specialized property consultants and advisors. We deal in almost all the leading projects of Pakistan and offers fair and dependable consultancy services.',
     ),
@@ -136,9 +165,15 @@ class Properties with ChangeNotifier {
       date: '',
       city: '',
       bath: '2',
+      phone: '+923167550840',
       image:
           'https://3.imimg.com/data3/XJ/AK/MY-13479662/property-buyer-500x500.png',
       address: 'Sargodha Punjab',
+      agent: Agent(
+          id: '1',
+          name: 'Sufyan Sajid',
+          email: 'themssk@gmail.com',
+          phone: '+923167550840'),
       description:
           'Siraat Real Estate and Builders is an emerging real estate marketing, sales,and construction company. We are a network of professionally trained and specialized property consultants and advisors. We deal in almost all the leading projects of Pakistan and offers fair and dependable consultancy services.',
     ),
@@ -154,9 +189,15 @@ class Properties with ChangeNotifier {
       features: [],
       date: '',
       city: '',
+      phone: '+923167550840',
       image:
           'https://3.imimg.com/data3/XJ/AK/MY-13479662/property-buyer-500x500.png',
       address: 'Sargodha Punjab',
+      agent: Agent(
+          id: '1',
+          name: 'Sufyan Sajid',
+          email: 'themssk@gmail.com',
+          phone: '+923167550840'),
       description:
           'Siraat Real Estate and Builders is an emerging real estate marketing, sales,and construction company. We are a network of professionally trained and specialized property consultants and advisors. We deal in almost all the leading projects of Pakistan and offers fair and dependable consultancy services.',
     ),
@@ -172,9 +213,15 @@ class Properties with ChangeNotifier {
       features: [],
       date: '',
       city: '',
+      phone: '+923167550840',
       image:
           'https://3.imimg.com/data3/XJ/AK/MY-13479662/property-buyer-500x500.png',
       address: 'Lahore Punjab',
+      agent: Agent(
+          id: '1',
+          name: 'Sufyan Sajid',
+          email: 'themssk@gmail.com',
+          phone: '+923167550840'),
       description:
           'Siraat Real Estate and Builders is an emerging real estate marketing, sales,and construction company. We are a network of professionally trained and specialized property consultants and advisors. We deal in almost all the leading projects of Pakistan and offers fair and dependable consultancy services.',
     ),
@@ -190,9 +237,15 @@ class Properties with ChangeNotifier {
       date: '',
       city: '',
       bath: '2',
+      phone: '+923167550840',
       image:
           'https://3.imimg.com/data3/XJ/AK/MY-13479662/property-buyer-500x500.png',
       address: 'Karachi Sindh',
+      agent: Agent(
+          id: '1',
+          name: 'Sufyan Sajid',
+          email: 'themssk@gmail.com',
+          phone: '+923167550840'),
       description:
           'Siraat Real Estate and Builders is an emerging real estate marketing, sales,and construction company. We are a network of professionally trained and specialized property consultants and advisors. We deal in almost all the leading projects of Pakistan and offers fair and dependable consultancy services.',
     ),
@@ -220,6 +273,10 @@ class Properties with ChangeNotifier {
     return [..._categories];
   }
 
+  List<String> bannerUrls = [];
+
+  String banner = '';
+
   Future<void> fetchAndSetProperties() async {
     List<Property> tempLaunch = [];
     List<Property> tempLatest = [];
@@ -230,6 +287,12 @@ class Properties with ChangeNotifier {
 
     var extractedResponse = json.decode(response.body);
     if (extractedResponse['success'] == true) {
+      var banAd = extractedResponse['banner'] as List<dynamic>;
+      banAd.forEach((ban) {
+        bannerUrls.add(ban['guid']);
+      });
+      print(bannerUrls.first);
+      banner = bannerUrls.first;
       //new launchings
       var newLaunch = extractedResponse['new_launching'] as List<dynamic>;
       newLaunch.forEach((prop) {
@@ -243,6 +306,12 @@ class Properties with ChangeNotifier {
             ),
           );
         });
+        var user = prop['user'];
+        Agent tempAgent = Agent(
+            id: user['id'].toString(),
+            email: user['user_email'],
+            name: user['user_nicename'],
+            phone: prop['phone']);
         tempLaunch.add(Property(
           id: prop['id'].toString(),
           name: prop['post_title'],
@@ -257,6 +326,8 @@ class Properties with ChangeNotifier {
           description: prop['description'],
           image: prop['image'],
           date: prop['post_date'],
+          phone: prop['phone'],
+          agent: tempAgent,
           features: tempFeatures,
         ));
       });
@@ -276,6 +347,12 @@ class Properties with ChangeNotifier {
             ),
           );
         });
+        var user = prop['user'];
+        Agent tempAgent = Agent(
+            id: user['id'].toString(),
+            email: user['user_email'],
+            name: user['user_nicename'],
+            phone: prop['phone']);
         tempLatest.add(Property(
           id: prop['id'].toString(),
           name: prop['post_title'],
@@ -290,6 +367,8 @@ class Properties with ChangeNotifier {
           description: prop['description'],
           image: prop['image'],
           date: prop['post_date'],
+          phone: prop['phone'],
+          agent: tempAgent,
           features: tempFeatures,
         ));
       });

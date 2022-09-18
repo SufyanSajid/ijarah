@@ -29,6 +29,8 @@ class Filter {
 class Filters with ChangeNotifier {
   Filter? filter;
 
+  bool isFilter = false;
+
   Future<void> getFilterValues() async {
     List<String> tempBed = [];
     List<String> tempBath = [];
@@ -84,6 +86,8 @@ class Filters with ChangeNotifier {
         propertyType: tempType,
         purpose: tempPurpose,
       );
+      isFilter = true;
+      notifyListeners();
     } else {
       print('error in getting filters');
     }

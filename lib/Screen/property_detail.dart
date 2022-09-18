@@ -1,10 +1,13 @@
 import 'package:extended_image/extended_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:ijarah/Models/property.dart';
+import 'package:ijarah/Screen/agentscren.dart';
 import 'package:ijarah/Screen/homepage.dart';
 import 'package:ijarah/constant.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class PropertyDetailScreen extends StatelessWidget {
   static const routeName = 'property-detail';
@@ -25,11 +28,11 @@ class PropertyDetailScreen extends StatelessWidget {
         title: Column(
           children: [
             Text(
-              property.price,
+              property.price.isEmpty ? 'Price here' : property.price,
               style: const TextStyle(color: Colors.white, fontSize: 20),
             ),
             Text(
-              property.address,
+              property.address.isEmpty ? 'Address' : property.address,
               style: const TextStyle(
                   color: Colors.white,
                   fontSize: 16,
@@ -56,23 +59,47 @@ class PropertyDetailScreen extends StatelessWidget {
                   0.2,
                 ),
               ),
-              child: ListTile(
-                leading: CircleAvatar(
-                  backgroundColor: primaryColor,
-                  radius: 30,
+              child: InkWell(
+                onTap: () {
+                  Navigator.of(context).pushNamed(AgentScreen.routeName,
+                      arguments: property.agent);
+                },
+                child: ListTile(
+                  leading: CircleAvatar(
+                    backgroundColor: primaryColor,
+                    radius: 30,
+                  ),
+                  title: Text(property.agent.name),
+                  subtitle: const Text(
+                    'Property Owner',
+                    style: TextStyle(fontSize: 12),
+                  ),
+                  trailing: IconButton(
+                      onPressed: () async {
+                        if (property.agent.phone == '') {
+                          showDialog(
+                              context: context,
+                              builder: (ctx) => CupertinoAlertDialog(
+                                    title: Text('Error'),
+                                    content: Text('Phone number missing'),
+                                    actions: [
+                                      TextButton(
+                                          onPressed: () {
+                                            Navigator.of(context).pop();
+                                          },
+                                          child: Text('Okay'))
+                                    ],
+                                  ));
+                        } else {
+                          await launch('https://wa.me/${property.agent.phone}');
+                        }
+                      },
+                      icon: const Icon(
+                        Icons.whatsapp,
+                        color: Colors.green,
+                        size: 35,
+                      )),
                 ),
-                title: const Text('Sufyan Sajid'),
-                subtitle: const Text(
-                  'Property Owner',
-                  style: TextStyle(fontSize: 12),
-                ),
-                trailing: IconButton(
-                    onPressed: () {},
-                    icon: const Icon(
-                      Icons.whatsapp,
-                      color: Colors.green,
-                      size: 35,
-                    )),
               ),
             ),
             Container(
@@ -230,8 +257,15 @@ class PropertyDetailScreen extends StatelessWidget {
                     child: ListView.builder(
                       itemCount: 6,
                       scrollDirection: Axis.horizontal,
-                      itemBuilder: (ctx, index) => PropertyWidget(
-                        property: properties[index],
+                      itemBuilder: (ctx, index) => InkWell(
+                        onTap: () {
+                          Navigator.of(context).pushNamed(
+                              PropertyDetailScreen.routeName,
+                              arguments: properties[index]);
+                        },
+                        child: PropertyWidget(
+                          property: properties[index],
+                        ),
                       ),
                     ),
                   )

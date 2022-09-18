@@ -31,19 +31,21 @@ class _FilterScreenState extends State<FilterScreen> {
   void didChangeDependencies() async {
     // if (isFirst) {
 
+    // if (Provider.of<Filters>(
+    //       context,
+    //     ).isFilter ==
+    //     false) {
     setState(() {
       isLoading = true;
     });
     await Provider.of<Filters>(context, listen: false).getFilterValues();
-    filter = Provider.of<Filters>(context, listen: false).filter!;
-
+    filter = Provider.of<Filters>(context, listen: false).filter;
     maxPrice = double.parse(filter!.maxPrice);
     minPrice = double.parse(filter!.minPrice);
-    print(maxPrice);
-    print(minPrice);
     setState(() {
       isLoading = false;
     });
+    // }
 
     //   isFirst = false;
     // }
@@ -56,46 +58,46 @@ class _FilterScreenState extends State<FilterScreen> {
     RangeValues _currentRangeValues = RangeValues(minPrice, maxPrice);
     // RangeValues _currentRangeValues = RangeValues(
     //     double.parse(filter!.minPrice), double.parse(filter!.minPrice));
-    return isLoading
-        ? Center(
-            child: AdaptiveIndecator(),
-          )
-        : Container(
-            child: SafeArea(
-              child: Stack(
-                children: [
-                  Column(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                        child: Appbar(
-                            height: height(context),
-                            width: width(context),
-                            leading: IconButton(
-                              icon: const Icon(
-                                Icons.menu,
-                                size: 25,
-                                color: Colors.white,
-                              ),
-                              onPressed: () {},
-                            ),
-                            center: const Center(
-                                child: Text(
-                              'Filters',
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 24),
-                            )),
-                            trailing: Text(
-                              'sufyan',
-                              style: TextStyle(color: primaryColor),
-                            )),
-                      )
-                    ],
-                  ),
-                  Column(
+    return Container(
+      child: SafeArea(
+        child: Stack(
+          children: [
+            Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                  child: Appbar(
+                      height: height(context),
+                      width: width(context),
+                      leading: IconButton(
+                        icon: const Icon(
+                          Icons.menu,
+                          size: 25,
+                          color: Colors.white,
+                        ),
+                        onPressed: () {},
+                      ),
+                      center: const Center(
+                          child: Text(
+                        'Filters',
+                        style: TextStyle(color: Colors.white, fontSize: 24),
+                      )),
+                      trailing: Text(
+                        'sufyan',
+                        style: TextStyle(color: primaryColor),
+                      )),
+                )
+              ],
+            ),
+            isLoading
+                ? Center(
+                    child: AdaptiveIndecator(),
+                  )
+                : Column(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      Container(
+                      AnimatedContainer(
+                        duration: Duration(milliseconds: 600),
                         padding: const EdgeInsets.symmetric(horizontal: 20),
                         height: height(context) * 79,
                         width: width(context) * 100,
@@ -525,10 +527,10 @@ class _FilterScreenState extends State<FilterScreen> {
                       ),
                     ],
                   ),
-                ],
-              ),
-            ),
-          );
+          ],
+        ),
+      ),
+    );
   }
 }
 
