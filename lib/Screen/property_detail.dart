@@ -1,3 +1,4 @@
+import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:ijarah/Models/property.dart';
@@ -41,8 +42,9 @@ class PropertyDetailScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Image.asset(
+            ExtendedImage.network(
               property.image,
+              cache: true,
               width: width(context) * 100,
               fit: BoxFit.cover,
               height: height(context) * 32,

@@ -1,3 +1,4 @@
+import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:ijarah/Models/appdata.dart';
 import 'package:ijarah/Models/property.dart';
@@ -6,6 +7,7 @@ import 'package:ijarah/Screen/latest.dart';
 import 'package:ijarah/Screen/launcing.dart';
 import 'package:ijarah/Screen/property_detail.dart';
 import 'package:ijarah/Screen/settings.dart';
+import 'package:ijarah/Widget/adaptive_indecator.dart';
 import 'package:ijarah/Widget/appbar.dart';
 import 'package:ijarah/constant.dart';
 import 'package:provider/provider.dart';
@@ -25,17 +27,24 @@ class _HomepageState extends State<Homepage> {
   int? selectedIndex;
   bool isLoading = false;
   bool isFirst = false;
+  List<Property> launchProp = [];
+  List<Property> latestProp = [];
+  List<String> categories = [];
 
   @override
   void didChangeDependencies() async {
+    print(123);
     // if(isFirst){
-    //    setState(() {
-    //   isLoading=true;
-    // });
-    // await Provider.of<Properties>(context, listen: false).fetchAndSetProperties();
-    // setState(() {
-    //   isLoading=false;F
-    // });
+    if (Provider.of<Properties>(context, listen: false).newLaunching.isEmpty) {
+      setState(() {
+        isLoading = true;
+      });
+      await Provider.of<Properties>(context, listen: false)
+          .fetchAndSetProperties();
+      setState(() {
+        isLoading = false;
+      });
+    }
     //   isFirst=false;
     // }
     // TODO: implement didChangeDependencies
@@ -44,7 +53,11 @@ class _HomepageState extends State<Homepage> {
 
   @override
   Widget build(BuildContext context) {
-    var properties = Provider.of<Properties>(context, listen: false).properties;
+    // var properties = Provider.of<Properties>(context, listen: false).properties;
+    launchProp = Provider.of<Properties>(context, listen: false).newLaunching;
+    latestProp =
+        Provider.of<Properties>(context, listen: false).latestProperties;
+    categories = Provider.of<Properties>(context, listen: false).catgeories;
     Widget homePage = SafeArea(
       bottom: false,
       child: Stack(
@@ -83,7 +96,7 @@ class _HomepageState extends State<Homepage> {
             children: [
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
-                height: height(context) * 80,
+                height: height(context) * 79.5,
                 width: width(context) * 100,
                 decoration: const BoxDecoration(
                   color: Colors.white,
@@ -110,20 +123,24 @@ class _HomepageState extends State<Homepage> {
                       ),
                       SizedBox(
                         height: height(context) * 24,
-                        child: ListView.builder(
-                          scrollDirection: Axis.horizontal,
-                          itemCount: 4,
-                          itemBuilder: (ctx, index) => InkWell(
-                            onTap: () {
-                              Navigator.of(context).pushNamed(
-                                  PropertyDetailScreen.routeName,
-                                  arguments: properties[index]);
-                            },
-                            child: PropertyWidget(
-                              property: properties[index],
-                            ),
-                          ),
-                        ),
+                        child: isLoading
+                            ? Center(
+                                child: AdaptiveIndecator(color: primaryColor),
+                              )
+                            : ListView.builder(
+                                scrollDirection: Axis.horizontal,
+                                itemCount: launchProp.length,
+                                itemBuilder: (ctx, index) => InkWell(
+                                  onTap: () {
+                                    Navigator.of(context).pushNamed(
+                                        PropertyDetailScreen.routeName,
+                                        arguments: launchProp[index]);
+                                  },
+                                  child: PropertyWidget(
+                                    property: launchProp[index],
+                                  ),
+                                ),
+                              ),
                       ),
                       SizedBox(
                         height: height(context) * 1.5,
@@ -149,41 +166,38 @@ class _HomepageState extends State<Homepage> {
                       ),
                       SizedBox(
                         height: height(context) * 24,
-                        child: ListView.builder(
-                          scrollDirection: Axis.horizontal,
-                          itemCount: 4,
-                          itemBuilder: (ctx, index) => PropertyWidget(
-                            property: properties[index],
-                          ),
-                        ),
+                        child: isLoading
+                            ? Center(
+                                child: AdaptiveIndecator(color: primaryColor),
+                              )
+                            : ListView.builder(
+                                scrollDirection: Axis.horizontal,
+                                itemCount: latestProp.length,
+                                itemBuilder: (ctx, index) => InkWell(
+                                  onTap: () {
+                                    Navigator.of(context).pushNamed(
+                                        PropertyDetailScreen.routeName,
+                                        arguments: latestProp[index]);
+                                  },
+                                  child: PropertyWidget(
+                                    property: latestProp[index],
+                                  ),
+                                ),
+                              ),
                       ),
                       SizedBox(
                         height: height(context) * 1,
                       ),
                       SizedBox(
-                        height: height(context) * 8,
-                        child: ListView(
-                          scrollDirection: Axis.horizontal,
-                          children: [
-                            QuickLink(
+                          height: height(context) * 8,
+                          child: ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            itemCount: categories.length,
+                            itemBuilder: (ctx, index) => QuickLink(
                               icon: Icons.home,
-                              title: 'New Projects',
+                              title: categories[index],
                             ),
-                            QuickLink(
-                              icon: Icons.home,
-                              title: 'New Projects',
-                            ),
-                            QuickLink(
-                              icon: Icons.home,
-                              title: 'New Projects',
-                            ),
-                            QuickLink(
-                              icon: Icons.home,
-                              title: 'New Projects',
-                            ),
-                          ],
-                        ),
-                      ),
+                          )),
                     ],
                   ),
                 ),
@@ -222,7 +236,7 @@ class QuickLink extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+      width: width(context) * 20,
       margin: const EdgeInsets.only(right: 10),
       decoration: BoxDecoration(
         color: primaryColor,
@@ -263,7 +277,7 @@ class PropertyWidget extends StatelessWidget {
     return Container(
       width: width(context) * 50,
       padding: const EdgeInsets.all(5),
-      margin: const EdgeInsets.only(right: 10),
+      margin: const EdgeInsets.symmetric(horizontal: 5),
       decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(5),
@@ -276,8 +290,9 @@ class PropertyWidget extends StatelessWidget {
         children: [
           Expanded(
             flex: 10,
-            child: Image.asset(
+            child: ExtendedImage.network(
               property.image,
+              cache: true,
               width: width(context) * 50,
               fit: BoxFit.cover,
             ),
@@ -298,9 +313,11 @@ class PropertyWidget extends StatelessWidget {
                 ),
                 Text(
                   property.address,
+                  maxLines: 1,
                   style: TextStyle(
                       fontSize: 11,
                       color: contentColor,
+                      overflow: TextOverflow.ellipsis,
                       fontWeight: FontWeight.w400),
                 ),
                 SizedBox(

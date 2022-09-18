@@ -86,8 +86,8 @@ class WelcomeButton extends StatelessWidget {
     return InkWell(
       onTap: onTap,
       child: Container(
-        width: width(context) * 55,
-        padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+        width: width(context) * 56,
+        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(5),
@@ -103,7 +103,7 @@ class WelcomeButton extends StatelessWidget {
             ),
             Text(
               title,
-              style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold),
+              style: const TextStyle(fontSize: 13, fontWeight: FontWeight.bold),
             )
           ],
         ),

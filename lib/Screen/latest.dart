@@ -13,7 +13,7 @@ class LatestScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var properties = Provider.of<Properties>(context).properties;
+    var properties = Provider.of<Properties>(context).latestProperties;
     return Scaffold(
       backgroundColor: primaryColor,
       body: SafeArea(
@@ -67,43 +67,47 @@ class LatestScreen extends StatelessWidget {
                       topRight: Radius.circular(20),
                     ),
                   ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SizedBox(
-                        height: height(context) * 3,
-                      ),
-                      const Text(
-                        'Latest Properties',
-                        style: TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.w600),
-                      ),
-                      SizedBox(
-                        height: height(context) * 1.5,
-                      ),
-                      Expanded(
-                        child: GridView.builder(
-                          gridDelegate:
-                              const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 2,
-                            crossAxisSpacing: 0.0,
-                            mainAxisSpacing: 15.0,
-                          ),
-                          itemCount: properties.length,
-                          itemBuilder: (ctx, index) => InkWell(
-                            onTap: () {
-                              Navigator.of(context).pushNamed(
-                                  PropertyDetailScreen.routeName,
-                                  arguments: properties[index]);
-                            },
-                            child: PropertyWidget(
-                              property: properties[index],
+                  child: properties.isEmpty
+                      ? Center(
+                          child: Text('No Properties to show'),
+                        )
+                      : Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            SizedBox(
+                              height: height(context) * 3,
                             ),
-                          ),
+                            const Text(
+                              'Latest Properties',
+                              style: TextStyle(
+                                  fontSize: 20, fontWeight: FontWeight.w600),
+                            ),
+                            SizedBox(
+                              height: height(context) * 1.5,
+                            ),
+                            Expanded(
+                              child: GridView.builder(
+                                gridDelegate:
+                                    const SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: 2,
+                                  crossAxisSpacing: 0.0,
+                                  mainAxisSpacing: 15.0,
+                                ),
+                                itemCount: properties.length,
+                                itemBuilder: (ctx, index) => InkWell(
+                                  onTap: () {
+                                    Navigator.of(context).pushNamed(
+                                        PropertyDetailScreen.routeName,
+                                        arguments: properties[index]);
+                                  },
+                                  child: PropertyWidget(
+                                    property: properties[index],
+                                  ),
+                                ),
+                              ),
+                            )
+                          ],
                         ),
-                      )
-                    ],
-                  ),
                 ),
               ],
             ),

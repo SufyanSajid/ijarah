@@ -30,6 +30,7 @@ class _FilterScreenState extends State<FilterScreen> {
   @override
   void didChangeDependencies() async {
     // if (isFirst) {
+
     setState(() {
       isLoading = true;
     });
@@ -43,6 +44,7 @@ class _FilterScreenState extends State<FilterScreen> {
     setState(() {
       isLoading = false;
     });
+
     //   isFirst = false;
     // }
     // TODO: implement didChangeDependencies

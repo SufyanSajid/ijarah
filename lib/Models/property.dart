@@ -62,7 +62,8 @@ class Properties with ChangeNotifier {
       bed: '4',
       bath: '2',
       address: 'Sargodha Punjab',
-      image: 'assets/images/property.png',
+      image:
+          'https://3.imimg.com/data3/XJ/AK/MY-13479662/property-buyer-500x500.png',
       features: [],
       date: '',
       city: '',
@@ -81,7 +82,8 @@ class Properties with ChangeNotifier {
       price: 'PKR 2 Crore',
       bed: '6',
       bath: '4',
-      image: 'assets/images/property.png',
+      image:
+          'https://3.imimg.com/data3/XJ/AK/MY-13479662/property-buyer-500x500.png',
       address: 'Sargodha Punjab',
       description:
           'Siraat Real Estate and Builders is an emerging real estate marketing, sales,and construction company. We are a network of professionally trained and specialized property consultants and advisors. We deal in almost all the leading projects of Pakistan and offers fair and dependable consultancy services.',
@@ -98,7 +100,8 @@ class Properties with ChangeNotifier {
       date: '',
       city: '',
       bath: '2',
-      image: 'assets/images/property.png',
+      image:
+          'https://3.imimg.com/data3/XJ/AK/MY-13479662/property-buyer-500x500.png',
       address: 'Lahore Punjab',
       description:
           'Siraat Real Estate and Builders is an emerging real estate marketing, sales,and construction company. We are a network of professionally trained and specialized property consultants and advisors. We deal in almost all the leading projects of Pakistan and offers fair and dependable consultancy services.',
@@ -115,7 +118,8 @@ class Properties with ChangeNotifier {
       date: '',
       city: '',
       bath: '2',
-      image: 'assets/images/property.png',
+      image:
+          'https://3.imimg.com/data3/XJ/AK/MY-13479662/property-buyer-500x500.png',
       address: 'Karachi Sindh',
       description:
           'Siraat Real Estate and Builders is an emerging real estate marketing, sales,and construction company. We are a network of professionally trained and specialized property consultants and advisors. We deal in almost all the leading projects of Pakistan and offers fair and dependable consultancy services.',
@@ -132,7 +136,8 @@ class Properties with ChangeNotifier {
       date: '',
       city: '',
       bath: '2',
-      image: 'assets/images/property.png',
+      image:
+          'https://3.imimg.com/data3/XJ/AK/MY-13479662/property-buyer-500x500.png',
       address: 'Sargodha Punjab',
       description:
           'Siraat Real Estate and Builders is an emerging real estate marketing, sales,and construction company. We are a network of professionally trained and specialized property consultants and advisors. We deal in almost all the leading projects of Pakistan and offers fair and dependable consultancy services.',
@@ -149,7 +154,8 @@ class Properties with ChangeNotifier {
       features: [],
       date: '',
       city: '',
-      image: 'assets/images/property.png',
+      image:
+          'https://3.imimg.com/data3/XJ/AK/MY-13479662/property-buyer-500x500.png',
       address: 'Sargodha Punjab',
       description:
           'Siraat Real Estate and Builders is an emerging real estate marketing, sales,and construction company. We are a network of professionally trained and specialized property consultants and advisors. We deal in almost all the leading projects of Pakistan and offers fair and dependable consultancy services.',
@@ -166,7 +172,8 @@ class Properties with ChangeNotifier {
       features: [],
       date: '',
       city: '',
-      image: 'assets/images/property.png',
+      image:
+          'https://3.imimg.com/data3/XJ/AK/MY-13479662/property-buyer-500x500.png',
       address: 'Lahore Punjab',
       description:
           'Siraat Real Estate and Builders is an emerging real estate marketing, sales,and construction company. We are a network of professionally trained and specialized property consultants and advisors. We deal in almost all the leading projects of Pakistan and offers fair and dependable consultancy services.',
@@ -183,7 +190,8 @@ class Properties with ChangeNotifier {
       date: '',
       city: '',
       bath: '2',
-      image: 'assets/images/property.png',
+      image:
+          'https://3.imimg.com/data3/XJ/AK/MY-13479662/property-buyer-500x500.png',
       address: 'Karachi Sindh',
       description:
           'Siraat Real Estate and Builders is an emerging real estate marketing, sales,and construction company. We are a network of professionally trained and specialized property consultants and advisors. We deal in almost all the leading projects of Pakistan and offers fair and dependable consultancy services.',
@@ -206,9 +214,16 @@ class Properties with ChangeNotifier {
     return [..._latestProperties];
   }
 
+  List<String> _categories = [];
+
+  List<String> get catgeories {
+    return [..._categories];
+  }
+
   Future<void> fetchAndSetProperties() async {
     List<Property> tempLaunch = [];
     List<Property> tempLatest = [];
+    List<String> tempCat = [];
     final url = Uri.parse('${baseUrl}home-posts');
 
     var response = await http.get(url);
@@ -280,8 +295,14 @@ class Properties with ChangeNotifier {
       });
       print(newLaunching.length);
 
+      var cats = extractedResponse['category'] as List<dynamic>;
+      cats.forEach((c) {
+        tempCat.add(c);
+      });
+
       _newLaunhings = tempLaunch;
       _latestProperties = tempLatest;
+      _categories = tempCat;
 
       notifyListeners();
 
