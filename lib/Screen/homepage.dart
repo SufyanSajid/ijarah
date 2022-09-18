@@ -242,14 +242,14 @@ class PropertyWidget extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Expanded(
-            flex: 7,
+            flex: 9,
             child: Image.asset(
               property.image,
               fit: BoxFit.cover,
             ),
           ),
           Expanded(
-            flex: 6,
+            flex: 8,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [

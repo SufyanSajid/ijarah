@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ijarah/Models/property.dart';
 import 'package:ijarah/Screen/homepage.dart';
+import 'package:ijarah/Screen/property_detail.dart';
 import 'package:ijarah/constant.dart';
 import 'package:provider/provider.dart';
 
@@ -38,7 +39,7 @@ class LatestScreen extends StatelessWidget {
                     ),
                     center: const Center(
                         child: Text(
-                      'New Launching',
+                      'Latest Properties',
                       style: TextStyle(color: Colors.white, fontSize: 24),
                     )),
                     trailing: IconButton(
@@ -56,7 +57,7 @@ class LatestScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 15),
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
                   height: height(context) * 86,
                   width: width(context) * 100,
                   decoration: const BoxDecoration(
@@ -85,12 +86,19 @@ class LatestScreen extends StatelessWidget {
                           gridDelegate:
                               const SliverGridDelegateWithFixedCrossAxisCount(
                             crossAxisCount: 2,
-                            crossAxisSpacing: 5.0,
-                            mainAxisSpacing: 10.0,
+                            crossAxisSpacing: 0.0,
+                            mainAxisSpacing: 15.0,
                           ),
                           itemCount: properties.length,
-                          itemBuilder: (ctx, index) => PropertyWidget(
-                            property: properties[index],
+                          itemBuilder: (ctx, index) => InkWell(
+                            onTap: () {
+                              Navigator.of(context).pushNamed(
+                                  PropertyDetailScreen.routeName,
+                                  arguments: properties[index]);
+                            },
+                            child: PropertyWidget(
+                              property: properties[index],
+                            ),
                           ),
                         ),
                       )

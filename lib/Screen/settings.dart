@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ijarah/Models/property.dart';
+import 'package:ijarah/Screen/homepage.dart';
+import 'package:ijarah/Screen/property_detail.dart';
 import 'package:provider/provider.dart';
 
 import '../Widget/appbar.dart';
@@ -51,7 +53,7 @@ class SettingScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
                   height: height(context) * 79,
                   width: width(context) * 100,
                   decoration: const BoxDecoration(
@@ -110,14 +112,38 @@ class SettingScreen extends StatelessWidget {
                         ],
                       ),
                       SizedBox(
-                        height: height(context) * 3,
+                        height: height(context) * 1,
                       ),
                       Container(
                         alignment: Alignment.bottomLeft,
                         child: const Text(
-                          'Similar Properties :',
+                          'Properites :',
                           style: TextStyle(
                               fontSize: 16, fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                      SizedBox(
+                        height: height(context) * 1,
+                      ),
+                      Expanded(
+                        child: GridView.builder(
+                          gridDelegate:
+                              const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2,
+                            crossAxisSpacing: 5.0,
+                            mainAxisSpacing: 10.0,
+                          ),
+                          itemCount: 4,
+                          itemBuilder: (ctx, index) => InkWell(
+                            onTap: () {
+                              Navigator.of(context).pushNamed(
+                                  PropertyDetailScreen.routeName,
+                                  arguments: properties[index]);
+                            },
+                            child: PropertyWidget(
+                              property: properties[index],
+                            ),
+                          ),
                         ),
                       ),
                     ],
