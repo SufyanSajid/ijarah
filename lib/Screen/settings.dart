@@ -3,6 +3,7 @@ import 'package:ijarah/Models/property.dart';
 import 'package:ijarah/Screen/homepage.dart';
 import 'package:ijarah/Screen/property_detail.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../Widget/appbar.dart';
 import '../constant.dart';
@@ -101,15 +102,19 @@ class SettingScreen extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           ContactButton(
-                            onTap: () {},
+                            onTap: () async {
+                              await launch("tel://+9230167550840");
+                            },
                             icon: Icons.call,
                           ),
                           SizedBox(
                             width: width(context) * 2,
                           ),
                           ContactButton(
-                            onTap: () {},
-                            icon: Icons.message,
+                            onTap: () async {
+                              await launch('https://wa.me/+9230167550840');
+                            },
+                            icon: Icons.whatsapp,
                           ),
                         ],
                       ),
