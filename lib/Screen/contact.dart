@@ -28,9 +28,11 @@ class ContactScreen extends StatelessWidget {
                         onPressed: () {},
                       ),
                       center: const Center(
-                          child: Text(
-                        'CONTACT GOTIJARAH',
-                        style: TextStyle(color: Colors.white, fontSize: 24),
+                          child: FittedBox(
+                        child: Text(
+                          'CONTACT GOTIJARAH',
+                          style: TextStyle(color: Colors.white, fontSize: 24),
+                        ),
                       )),
                       trailing: Text(
                         'sufyan',

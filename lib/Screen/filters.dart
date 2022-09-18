@@ -376,7 +376,7 @@ class _FilterScreenState extends State<FilterScreen> {
                                   Expanded(
                                     flex: 2,
                                     child: Container(
-                                      height: height(context) * 3.5,
+                                      height: height(context) * 4,
                                       decoration: BoxDecoration(
                                           color: Colors.grey.withOpacity(0.1),
                                           borderRadius:
@@ -423,7 +423,7 @@ class _FilterScreenState extends State<FilterScreen> {
                                   Expanded(
                                     flex: 2,
                                     child: Container(
-                                      height: height(context) * 3.5,
+                                      height: height(context) * 4,
                                       decoration: BoxDecoration(
                                           color: Colors.grey.withOpacity(0.1),
                                           borderRadius:
@@ -574,8 +574,8 @@ class _PurposeBoxState extends State<PurposeBox> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: height(context) * 4,
-      width: width(context) * 30,
+      height: height(context) * 5.5,
+      width: width(context) * 34,
       decoration: BoxDecoration(
         border:
             Border.all(color: primaryColor, width: 0, style: BorderStyle.solid),
@@ -591,7 +591,7 @@ class _PurposeBoxState extends State<PurposeBox> {
               });
             },
             child: Container(
-                width: width(context) * 15,
+                width: width(context) * 17,
                 padding: const EdgeInsets.symmetric(vertical: 10),
                 decoration: BoxDecoration(
                     color: index == 0 ? primaryColor : Colors.white,
@@ -619,7 +619,7 @@ class _PurposeBoxState extends State<PurposeBox> {
               });
             },
             child: Container(
-                width: width(context) * 15,
+                width: width(context) * 17,
                 padding: const EdgeInsets.symmetric(vertical: 10),
                 decoration: BoxDecoration(
                     color: index == 1 ? primaryColor : Colors.white,

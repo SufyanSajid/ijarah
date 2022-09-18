@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:ijarah/Models/appdata.dart';
 import 'package:ijarah/Models/filters.dart';
@@ -15,6 +16,8 @@ import 'package:ijarah/Screen/property_detail.dart';
 import 'package:provider/provider.dart';
 
 void main() {
+  SystemChrome.setPreferredOrientations(
+      [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
   runApp(const MyApp());
 }
 

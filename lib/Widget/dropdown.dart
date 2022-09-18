@@ -20,17 +20,19 @@ class _CustomDropDownState extends State<CustomDropDown> {
       //   width: width(context) * 20,
       padding: const EdgeInsets.symmetric(horizontal: 20),
       decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(15),
-          color: primaryColor,
-          boxShadow: const [
-            BoxShadow(color: Colors.grey, offset: Offset(0, 5), blurRadius: 15)
-          ]),
+        borderRadius: BorderRadius.circular(15),
+        color: Colors.white,
+
+        // boxShadow: const [
+        //   BoxShadow(color: Colors.grey, offset: Offset(0, 5), blurRadius: 15)
+        // ],
+      ),
       child: DropdownButtonHideUnderline(
         child: DropdownButton(
-          dropdownColor: primaryColor,
+          dropdownColor: Colors.white,
           icon: const Icon(
             Icons.keyboard_arrow_down_outlined,
-            color: Colors.white,
+            color: Colors.black,
           ),
           value: widget.items[selectedIndex],
           items: widget.items.map(buildMenuItem).toList(),
@@ -52,7 +54,7 @@ DropdownMenuItem<String> buildMenuItem(String item) => DropdownMenuItem(
         child: Text(
           item,
           style: const TextStyle(
-            color: Colors.white,
+            color: Colors.black,
             fontSize: 15,
             fontFamily: 'Poppins-thins',
           ),

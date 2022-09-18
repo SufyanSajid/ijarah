@@ -1,5 +1,21 @@
-import 'package:flutter/material.dart';
+import 'dart:convert';
 
+import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+
+import '../constant.dart';
+
+class Feature {
+  String id;
+  String name;
+
+  Feature({
+    required this.id,
+    required this.name,
+  });
+}
+
+//phone and user not added in model due to lack of information
 class Property {
   String id;
   String name;
@@ -12,6 +28,9 @@ class Property {
   String purpose;
   String address;
   String description;
+  String date;
+  String city;
+  List<Feature> features;
 
   Property({
     required this.id,
@@ -22,14 +41,17 @@ class Property {
     required this.price,
     required this.bed,
     required this.bath,
+    required this.city,
     required this.address,
     required this.description,
     required this.image,
+    required this.date,
+    required this.features,
   });
 }
 
 class Properties with ChangeNotifier {
-  final List<Property> _properties = [
+  List<Property> _properties = [
     Property(
       id: '1',
       name: '550 Sq Yd House Available For Rent Precinct 35',
@@ -41,11 +63,17 @@ class Properties with ChangeNotifier {
       bath: '2',
       address: 'Sargodha Punjab',
       image: 'assets/images/property.png',
+      features: [],
+      date: '',
+      city: '',
       description:
           'Siraat Real Estate and Builders is an emerging real estate marketing, sales,and construction company. We are a network of professionally trained and specialized property consultants and advisors. We deal in almost all the leading projects of Pakistan and offers fair and dependable consultancy services.',
     ),
     Property(
       id: '2',
+      features: [],
+      date: '',
+      city: '',
       name: '350 Sq Yd Villa Available For Sale Precinct 35',
       area: '675 Sq.Ft',
       purpose: 'Sale',
@@ -66,6 +94,9 @@ class Properties with ChangeNotifier {
       type: 'Flat',
       price: 'PKR 50 Lac',
       bed: '3',
+      features: [],
+      date: '',
+      city: '',
       bath: '2',
       image: 'assets/images/property.png',
       address: 'Lahore Punjab',
@@ -80,6 +111,9 @@ class Properties with ChangeNotifier {
       type: 'Shop',
       price: 'PKR 1 Lac',
       bed: '4',
+      features: [],
+      date: '',
+      city: '',
       bath: '2',
       image: 'assets/images/property.png',
       address: 'Karachi Sindh',
@@ -94,6 +128,9 @@ class Properties with ChangeNotifier {
       type: 'House',
       price: 'PKR 50 Thousand',
       bed: '4',
+      features: [],
+      date: '',
+      city: '',
       bath: '2',
       image: 'assets/images/property.png',
       address: 'Sargodha Punjab',
@@ -109,6 +146,9 @@ class Properties with ChangeNotifier {
       price: 'PKR 2 Crore',
       bed: '6',
       bath: '4',
+      features: [],
+      date: '',
+      city: '',
       image: 'assets/images/property.png',
       address: 'Sargodha Punjab',
       description:
@@ -123,6 +163,9 @@ class Properties with ChangeNotifier {
       price: 'PKR 50 Lac',
       bed: '3',
       bath: '2',
+      features: [],
+      date: '',
+      city: '',
       image: 'assets/images/property.png',
       address: 'Lahore Punjab',
       description:
@@ -136,6 +179,9 @@ class Properties with ChangeNotifier {
       type: 'Shop',
       price: 'PKR 1 Lac',
       bed: '4',
+      features: [],
+      date: '',
+      city: '',
       bath: '2',
       image: 'assets/images/property.png',
       address: 'Karachi Sindh',
@@ -146,5 +192,102 @@ class Properties with ChangeNotifier {
 
   List<Property> get properties {
     return [..._properties];
+  }
+
+  List<Property> _newLaunhings = [];
+
+  List<Property> get newLaunching {
+    return [..._newLaunhings];
+  }
+
+  List<Property> _latestProperties = [];
+
+  List<Property> get latestProperties {
+    return [..._latestProperties];
+  }
+
+  Future<void> fetchAndSetProperties() async {
+    List<Property> tempLaunch = [];
+    List<Property> tempLatest = [];
+    final url = Uri.parse('${baseUrl}home-posts');
+
+    var response = await http.get(url);
+
+    var extractedResponse = json.decode(response.body);
+    if (extractedResponse['success'] == true) {
+      //new launchings
+      var newLaunch = extractedResponse['new_launching'] as List<dynamic>;
+      newLaunch.forEach((prop) {
+        List<Feature> tempFeatures = [];
+        var features = prop['property_feature'] as List<dynamic>;
+        features.forEach((feature) {
+          tempFeatures.add(
+            Feature(
+              id: feature['term_id'],
+              name: feature['name'],
+            ),
+          );
+        });
+        tempLaunch.add(Property(
+          id: prop['id'].toString(),
+          name: prop['post_title'],
+          area: prop['size'] == null ? '' : prop['size'],
+          purpose: prop['purpose'],
+          type: prop['property_type'] == null ? '' : prop['property_type'],
+          price: prop['price'],
+          bed: prop['bedrooms'],
+          bath: prop['bathrooms'],
+          city: prop['city'],
+          address: prop['address'],
+          description: prop['description'],
+          image: prop['image'],
+          date: prop['post_date'],
+          features: tempFeatures,
+        ));
+      });
+
+      //new launch end
+
+      //latest
+      var latestProp = extractedResponse['latest'] as List<dynamic>;
+      latestProp.forEach((prop) {
+        List<Feature> tempFeatures = [];
+        var features = prop['property_feature'] as List<dynamic>;
+        features.forEach((feature) {
+          tempFeatures.add(
+            Feature(
+              id: feature['term_id'],
+              name: feature['name'],
+            ),
+          );
+        });
+        tempLatest.add(Property(
+          id: prop['id'].toString(),
+          name: prop['post_title'],
+          area: prop['size'] == null ? '' : prop['size'],
+          purpose: prop['purpose'],
+          type: prop['property_type'] == null ? '' : prop['property_type'],
+          price: prop['price'],
+          bed: prop['bedrooms'],
+          bath: prop['bathrooms'],
+          city: prop['city'],
+          address: prop['address'],
+          description: prop['description'],
+          image: prop['image'],
+          date: prop['post_date'],
+          features: tempFeatures,
+        ));
+      });
+      print(newLaunching.length);
+
+      _newLaunhings = tempLaunch;
+      _latestProperties = tempLatest;
+
+      notifyListeners();
+
+      //latest end
+    } else {
+      print('error in fetch and set properties');
+    }
   }
 }

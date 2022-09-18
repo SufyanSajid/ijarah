@@ -13,10 +13,34 @@ import 'package:provider/provider.dart';
 import '../Widget/bottombar.dart';
 import 'filters.dart';
 
-class Homepage extends StatelessWidget {
+class Homepage extends StatefulWidget {
   static const routeName = 'home-page';
   Homepage({super.key});
+
+  @override
+  State<Homepage> createState() => _HomepageState();
+}
+
+class _HomepageState extends State<Homepage> {
   int? selectedIndex;
+  bool isLoading = false;
+  bool isFirst = false;
+
+  @override
+  void didChangeDependencies() async {
+    // if(isFirst){
+    //    setState(() {
+    //   isLoading=true;
+    // });
+    // await Provider.of<Properties>(context, listen: false).fetchAndSetProperties();
+    // setState(() {
+    //   isLoading=false;F
+    // });
+    //   isFirst=false;
+    // }
+    // TODO: implement didChangeDependencies
+    super.didChangeDependencies();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -59,7 +83,7 @@ class Homepage extends StatelessWidget {
             children: [
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
-                height: height(context) * 79,
+                height: height(context) * 80,
                 width: width(context) * 100,
                 decoration: const BoxDecoration(
                   color: Colors.white,
@@ -68,94 +92,100 @@ class Homepage extends StatelessWidget {
                     topRight: Radius.circular(20),
                   ),
                 ),
-                child: Column(
-                  children: [
-                    SizedBox(
-                      height: height(context) * 3,
-                    ),
-                    TitleRow(
-                      title: 'New Launching',
-                      onTap: () {
-                        Navigator.of(context)
-                            .pushNamed(NewLauncingScreen.routeName);
-                      },
-                    ),
-                    SizedBox(
-                      height: height(context) * 2,
-                    ),
-                    SizedBox(
-                      height: height(context) * 22,
-                      child: ListView.builder(
-                        scrollDirection: Axis.horizontal,
-                        itemCount: 4,
-                        itemBuilder: (ctx, index) => InkWell(
-                          onTap: () {
-                            Navigator.of(context).pushNamed(
-                                PropertyDetailScreen.routeName,
-                                arguments: properties[index]);
-                          },
-                          child: PropertyWidget(
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      SizedBox(
+                        height: height(context) * 2,
+                      ),
+                      TitleRow(
+                        title: 'New Launching',
+                        onTap: () {
+                          Navigator.of(context)
+                              .pushNamed(NewLauncingScreen.routeName);
+                        },
+                      ),
+                      SizedBox(
+                        height: height(context) * 1,
+                      ),
+                      SizedBox(
+                        height: height(context) * 24,
+                        child: ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemCount: 4,
+                          itemBuilder: (ctx, index) => InkWell(
+                            onTap: () {
+                              Navigator.of(context).pushNamed(
+                                  PropertyDetailScreen.routeName,
+                                  arguments: properties[index]);
+                            },
+                            child: PropertyWidget(
+                              property: properties[index],
+                            ),
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: height(context) * 1.5,
+                      ),
+                      Image.asset(
+                        'assets/images/banner.png',
+                        height: height(context) * 9,
+                        width: width(context) * 100,
+                        fit: BoxFit.cover,
+                      ),
+                      SizedBox(
+                        height: height(context) * 1.5,
+                      ),
+                      TitleRow(
+                        title: 'Latest Properties',
+                        onTap: () {
+                          Navigator.of(context)
+                              .pushNamed(LatestScreen.routeName);
+                        },
+                      ),
+                      SizedBox(
+                        height: height(context) * 1,
+                      ),
+                      SizedBox(
+                        height: height(context) * 24,
+                        child: ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemCount: 4,
+                          itemBuilder: (ctx, index) => PropertyWidget(
                             property: properties[index],
                           ),
                         ),
                       ),
-                    ),
-                    SizedBox(
-                      height: height(context) * 2,
-                    ),
-                    Image.asset(
-                      'assets/images/banner.png',
-                      height: height(context) * 7,
-                      width: width(context) * 100,
-                      fit: BoxFit.cover,
-                    ),
-                    SizedBox(
-                      height: height(context) * 2,
-                    ),
-                    TitleRow(
-                      title: 'Latest Properties',
-                      onTap: () {
-                        Navigator.of(context).pushNamed(LatestScreen.routeName);
-                      },
-                    ),
-                    SizedBox(
-                      height: height(context) * 2,
-                    ),
-                    SizedBox(
-                      height: height(context) * 22,
-                      child: ListView.builder(
-                        scrollDirection: Axis.horizontal,
-                        itemCount: 4,
-                        itemBuilder: (ctx, index) => PropertyWidget(
-                          property: properties[index],
+                      SizedBox(
+                        height: height(context) * 1,
+                      ),
+                      SizedBox(
+                        height: height(context) * 8,
+                        child: ListView(
+                          scrollDirection: Axis.horizontal,
+                          children: [
+                            QuickLink(
+                              icon: Icons.home,
+                              title: 'New Projects',
+                            ),
+                            QuickLink(
+                              icon: Icons.home,
+                              title: 'New Projects',
+                            ),
+                            QuickLink(
+                              icon: Icons.home,
+                              title: 'New Projects',
+                            ),
+                            QuickLink(
+                              icon: Icons.home,
+                              title: 'New Projects',
+                            ),
+                          ],
                         ),
                       ),
-                    ),
-                    SizedBox(
-                      height: height(context) * 2,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        QuickLink(
-                          icon: Icons.home,
-                          title: 'New Projects',
-                        ),
-                        QuickLink(
-                          icon: Icons.home,
-                          title: 'New Projects',
-                        ),
-                        QuickLink(
-                          icon: Icons.home,
-                          title: 'New Projects',
-                        ),
-                        QuickLink(
-                          icon: Icons.home,
-                          title: 'New Projects',
-                        ),
-                      ],
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ],
@@ -193,16 +223,18 @@ class QuickLink extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+      margin: const EdgeInsets.only(right: 10),
       decoration: BoxDecoration(
         color: primaryColor,
         borderRadius: BorderRadius.circular(5),
       ),
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Icon(
             icon,
             color: Colors.white,
-            size: 40,
+            size: height(context) * 3,
           ),
           SizedBox(
             height: height(context) * 0.2,
@@ -229,6 +261,7 @@ class PropertyWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      width: width(context) * 50,
       padding: const EdgeInsets.all(5),
       margin: const EdgeInsets.only(right: 10),
       decoration: BoxDecoration(
@@ -242,9 +275,10 @@ class PropertyWidget extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Expanded(
-            flex: 9,
+            flex: 10,
             child: Image.asset(
               property.image,
+              width: width(context) * 50,
               fit: BoxFit.cover,
             ),
           ),
@@ -252,6 +286,7 @@ class PropertyWidget extends StatelessWidget {
             flex: 8,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 SizedBox(
                   height: height(context) * 0.5,
@@ -259,12 +294,12 @@ class PropertyWidget extends StatelessWidget {
                 Text(
                   property.price,
                   style: const TextStyle(
-                      fontSize: 16, fontWeight: FontWeight.bold),
+                      fontSize: 12, fontWeight: FontWeight.bold),
                 ),
                 Text(
                   property.address,
                   style: TextStyle(
-                      fontSize: 14,
+                      fontSize: 11,
                       color: contentColor,
                       fontWeight: FontWeight.w400),
                 ),
@@ -274,7 +309,7 @@ class PropertyWidget extends StatelessWidget {
                 Text(
                   'House for ${property.purpose}',
                   style: TextStyle(
-                      fontSize: 16,
+                      fontSize: 12,
                       color: primaryColor,
                       fontWeight: FontWeight.w400),
                 ),
@@ -330,7 +365,10 @@ class Attribute extends StatelessWidget {
         SizedBox(
           width: 5,
         ),
-        Text(value)
+        Text(
+          value,
+          style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold),
+        )
       ],
     );
   }
