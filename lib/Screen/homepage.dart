@@ -1,5 +1,6 @@
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:ijarah/Models/appdata.dart';
 import 'package:ijarah/Models/property.dart';
 import 'package:ijarah/Screen/contact.dart';
@@ -71,10 +72,10 @@ class _HomepageState extends State<Homepage> {
                     height: height(context),
                     width: width(context),
                     leading: IconButton(
-                      icon: const Icon(
+                      icon: Icon(
                         Icons.menu,
                         size: 25,
-                        color: Colors.white,
+                        color: primaryColor,
                       ),
                       onPressed: () {},
                     ),
@@ -84,7 +85,9 @@ class _HomepageState extends State<Homepage> {
                       style: TextStyle(color: Colors.white, fontSize: 24),
                     )),
                     trailing: IconButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          Provider.of<App>(context, listen: false).setIndex(1);
+                        },
                         icon: const Icon(
                           Icons.search,
                           color: Colors.white,
@@ -130,7 +133,7 @@ class _HomepageState extends State<Homepage> {
                               )
                             : ListView.builder(
                                 scrollDirection: Axis.horizontal,
-                                itemCount: launchProp.length,
+                                itemCount: 8,
                                 itemBuilder: (ctx, index) => InkWell(
                                   onTap: () {
                                     Navigator.of(context).pushNamed(
@@ -174,7 +177,7 @@ class _HomepageState extends State<Homepage> {
                               )
                             : ListView.builder(
                                 scrollDirection: Axis.horizontal,
-                                itemCount: latestProp.length,
+                                itemCount: 8,
                                 itemBuilder: (ctx, index) => InkWell(
                                   onTap: () {
                                     Navigator.of(context).pushNamed(
@@ -196,7 +199,7 @@ class _HomepageState extends State<Homepage> {
                             scrollDirection: Axis.horizontal,
                             itemCount: categories.length,
                             itemBuilder: (ctx, index) => QuickLink(
-                              icon: Icons.home,
+                              svg: 'assets/images/dental.svg',
                               title: categories[index],
                             ),
                           )),
@@ -229,10 +232,10 @@ class _HomepageState extends State<Homepage> {
 class QuickLink extends StatelessWidget {
   QuickLink({
     Key? key,
-    required this.icon,
+    required this.svg,
     required this.title,
   }) : super(key: key);
-  IconData icon;
+  String svg;
   String title;
 
   @override
@@ -247,11 +250,7 @@ class QuickLink extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(
-            icon,
-            color: Colors.white,
-            size: height(context) * 3,
-          ),
+          SvgPicture.asset(svg),
           SizedBox(
             height: height(context) * 0.2,
           ),

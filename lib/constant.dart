@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-Color primaryColor = Color.fromRGBO(52, 12, 185, 1);
+Color primaryColor = Color.fromRGBO(32, 67, 185, 1);
 Color headingColor = Colors.black;
 Color contentColor = Color.fromRGBO(126, 126, 126, 1);
 

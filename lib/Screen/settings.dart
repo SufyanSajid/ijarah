@@ -82,7 +82,7 @@ class SettingScreen extends StatelessWidget {
                       SizedBox(
                         height: height(context) * 1,
                       ),
-                      Text(
+                      const Text(
                         'Sufyan Sajid',
                         style: TextStyle(
                             fontWeight: FontWeight.w600, fontSize: 17),
@@ -90,7 +90,7 @@ class SettingScreen extends StatelessWidget {
                       SizedBox(
                         height: height(context) * 0.5,
                       ),
-                      Text(
+                      const Text(
                         '(Property Owner)',
                         style: TextStyle(
                             fontWeight: FontWeight.w300, fontSize: 12),
@@ -103,7 +103,7 @@ class SettingScreen extends StatelessWidget {
                         children: [
                           ContactButton(
                             onTap: () async {
-                              await launch("tel://+9230167550840");
+                              await launch("tel://+923167550840");
                             },
                             icon: Icons.call,
                           ),
@@ -112,7 +112,7 @@ class SettingScreen extends StatelessWidget {
                           ),
                           ContactButton(
                             onTap: () async {
-                              await launch('https://wa.me/+9230167550840');
+                              await launch('https://wa.me/+923167550840');
                             },
                             icon: Icons.whatsapp,
                           ),

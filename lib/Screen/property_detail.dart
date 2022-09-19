@@ -53,7 +53,10 @@ class PropertyDetailScreen extends StatelessWidget {
               height: height(context) * 32,
             ),
             Container(
-              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+              padding: const EdgeInsets.symmetric(
+                horizontal: 20,
+                vertical: 5,
+              ),
               decoration: BoxDecoration(
                 color: Colors.grey.withOpacity(
                   0.2,
@@ -74,31 +77,7 @@ class PropertyDetailScreen extends StatelessWidget {
                     'Property Owner',
                     style: TextStyle(fontSize: 12),
                   ),
-                  trailing: IconButton(
-                      onPressed: () async {
-                        if (property.agent.phone == '') {
-                          showDialog(
-                              context: context,
-                              builder: (ctx) => CupertinoAlertDialog(
-                                    title: Text('Error'),
-                                    content: Text('Phone number missing'),
-                                    actions: [
-                                      TextButton(
-                                          onPressed: () {
-                                            Navigator.of(context).pop();
-                                          },
-                                          child: Text('Okay'))
-                                    ],
-                                  ));
-                        } else {
-                          await launch('https://wa.me/${property.agent.phone}');
-                        }
-                      },
-                      icon: const Icon(
-                        Icons.whatsapp,
-                        color: Colors.green,
-                        size: 35,
-                      )),
+                  trailing: Contact(property: property),
                 ),
               ),
             ),
@@ -137,7 +116,8 @@ class PropertyDetailScreen extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Text(
                 property.name,
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+                style:
+                    const TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
               ),
             ),
             SizedBox(
@@ -235,7 +215,7 @@ class PropertyDetailScreen extends StatelessWidget {
               ),
             ),
             Container(
-              margin: EdgeInsets.symmetric(vertical: 40),
+              margin: const EdgeInsets.symmetric(vertical: 40),
               color: Colors.grey.withOpacity(0.5),
               height: 1,
               width: width(context) * 100,
@@ -282,6 +262,79 @@ class PropertyDetailScreen extends StatelessWidget {
   }
 }
 
+class Contact extends StatelessWidget {
+  const Contact({
+    Key? key,
+    required this.property,
+  }) : super(key: key);
+
+  final Property property;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: height(context) * 5,
+      width: width(context) * 28,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          IconButton(
+              onPressed: () async {
+                if (property.agent.phone == '') {
+                  showDialog(
+                      context: context,
+                      builder: (ctx) => CupertinoAlertDialog(
+                            title: Text('Error'),
+                            content: Text('Phone number missing'),
+                            actions: [
+                              TextButton(
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                  child: Text('Okay'))
+                            ],
+                          ));
+                } else {
+                  print(property.agent.phone);
+                  await launch("tel://${property.agent.phone}");
+                }
+              },
+              icon: Icon(
+                Icons.call,
+                color: primaryColor,
+                size: 30,
+              )),
+          IconButton(
+              onPressed: () async {
+                if (property.agent.phone == '') {
+                  showDialog(
+                      context: context,
+                      builder: (ctx) => CupertinoAlertDialog(
+                            title: Text('Error'),
+                            content: Text('Phone number missing'),
+                            actions: [
+                              TextButton(
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                  child: Text('Okay'))
+                            ],
+                          ));
+                } else {
+                  await launch('https://wa.me/${property.agent.phone}');
+                }
+              },
+              icon: const Icon(
+                Icons.whatsapp,
+                color: Colors.green,
+                size: 30,
+              )),
+        ],
+      ),
+    );
+  }
+}
+
 class DescriptionRow extends StatelessWidget {
   DescriptionRow({
     Key? key,
@@ -299,21 +352,28 @@ class DescriptionRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(vertical: 10),
+      padding: const EdgeInsets.symmetric(vertical: 10),
       color: color,
-      margin: EdgeInsets.symmetric(horizontal: 30, vertical: 3),
+      margin: const EdgeInsets.symmetric(horizontal: 30, vertical: 3),
       child: Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
         Expanded(
           flex: 1,
-          child: Icon(icon),
+          child: Icon(
+            icon,
+            color: Colors.black.withOpacity(0.5),
+          ),
         ),
         Expanded(
-          flex: 1,
+          flex: 2,
           child: Text(title),
         ),
+        Expanded(flex: 1, child: Container()),
         Expanded(
-          flex: 1,
-          child: Text(value),
+          flex: 3,
+          child: Text(
+            value,
+            textAlign: TextAlign.left,
+          ),
         ),
       ]),
     );

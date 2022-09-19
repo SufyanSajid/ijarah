@@ -37,7 +37,7 @@ class WelComeScreen extends StatelessWidget {
                   height: height(context) * 1,
                 ),
                 SizedBox(
-                  width: width(context) * 70,
+                  width: width(context) * 56,
                   child: const Text(
                     'Find the property of your desire, rent home and sale property.',
                     style: TextStyle(color: Colors.white, fontSize: 12),

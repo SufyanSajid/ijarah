@@ -1,6 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.ijarah">
     <uses-permission android:name="android.permission.INTERNET" />
+    
    <application
         android:label="ijarah"
         android:name="${applicationName}"
@@ -31,5 +32,7 @@
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
+        <meta-data android:name="com.google.android.geo.API_KEY"
+               android:value="AIzaSyCiUyqKUuOWoH-PpF4XocD_3uVx41PpgNQ"/>
     </application>
 </manifest>

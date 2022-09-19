@@ -43,7 +43,7 @@ class MyApp extends StatelessWidget {
       ],
       child: MaterialApp(
         title: 'Ijarah',
-        theme: ThemeData(),
+        theme: ThemeData(fontFamily: 'Calibri'),
         routes: {
           '/': (ctx) => SplashScreen(),
           WelComeScreen.routeName: (ctx) => const WelComeScreen(),
