@@ -47,7 +47,7 @@ class MyApp extends StatelessWidget {
         title: 'Ijarah',
         theme: ThemeData(fontFamily: 'Calibri'),
         routes: {
-          '/': (ctx) => Homepage(),
+          '/': (ctx) => SplashScreen(),
           WelComeScreen.routeName: (ctx) => const WelComeScreen(),
           OnBoardingScreen.routeName: (ctx) => OnBoardingScreen(),
           LoginScreen.routeName: (ctx) => LoginScreen(),

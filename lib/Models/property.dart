@@ -282,6 +282,12 @@ class Properties with ChangeNotifier {
     return [..._filterProperties];
   }
 
+  List<Property> _agentProperties = [];
+
+  List<Property> get agentProperties {
+    return [..._agentProperties];
+  }
+
   List<String> _categories = [];
 
   List<String> get catgeories {
@@ -512,6 +518,72 @@ class Properties with ChangeNotifier {
       });
     } else {
       print('error in fetching filter properties');
+    }
+  }
+
+  Future<void> getAgentProperties(String agentId) async {
+    List<Property> tempAgentProperty = [];
+    final url = Uri.parse('${baseUrl}agent-properties');
+
+    var response = await http.post(url, body: {
+      'agent_id': agentId,
+    });
+    var extractedResponse = json.decode(response.body);
+    if (extractedResponse['success'] == true) {
+      var data = extractedResponse['data'] as List<dynamic>;
+      data.forEach((prop) {
+        List<Feature> tempFeatures = [];
+        var features = prop['property_feature'] as List<dynamic>;
+        features.forEach((feature) {
+          tempFeatures.add(
+            Feature(
+              id: feature['term_id'],
+              name: feature['name'],
+            ),
+          );
+        });
+        var user = prop['user'];
+        Agent? tempAgent;
+        if (user != null) {
+          tempAgent = Agent(
+              id: user['id'].toString(),
+              email: user['user_email'],
+              name: user['user_nicename'],
+              phone: prop['phone']);
+        } else {
+          tempAgent = null;
+        }
+        List<String> imageUrls = [];
+        var images = prop['image'] as List<dynamic>;
+        images.forEach((img) {
+          imageUrls.add(img['guid']);
+        });
+        var descrip = _parseHtmlString(prop['description']);
+        tempAgentProperty.add(Property(
+          id: prop['id'].toString(),
+          name: prop['post_title'],
+          area: prop['size'] == null ? '' : prop['size'],
+          purpose: prop['purpose'],
+          type: prop['property_type'] == null ? '' : prop['property_type'],
+          price: prop['price'],
+          bed: prop['bedrooms'],
+          bath: prop['bathrooms'],
+          city: prop['city'],
+          address: prop['address'],
+          description: descrip,
+          image: imageUrls,
+          date: prop['post_date'],
+          phone: prop['phone'],
+          agent: tempAgent != null ? tempAgent : null,
+          features: tempFeatures,
+        ));
+
+        _agentProperties = tempAgentProperty;
+        print(_agentProperties.length);
+        notifyListeners();
+      });
+    } else {
+      print('error in fetching agent properties');
     }
   }
 }

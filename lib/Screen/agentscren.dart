@@ -5,20 +5,47 @@ import 'package:ijarah/Models/property.dart';
 import 'package:ijarah/Screen/homepage.dart';
 import 'package:ijarah/Screen/property_detail.dart';
 import 'package:ijarah/Screen/settings.dart';
+import 'package:ijarah/Widget/adaptive_indecator.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../Widget/appbar.dart';
 import '../constant.dart';
 
-class AgentScreen extends StatelessWidget {
+class AgentScreen extends StatefulWidget {
   static const routeName = 'agent-screen';
   const AgentScreen({super.key});
 
   @override
+  State<AgentScreen> createState() => _AgentScreenState();
+}
+
+class _AgentScreenState extends State<AgentScreen> {
+  bool isFirst = true;
+  bool isLoading = false;
+  Agent? agent;
+
+  @override
+  void didChangeDependencies() async {
+    if (isFirst) {
+      setState(() {
+        isLoading = true;
+      });
+      agent = ModalRoute.of(context)!.settings.arguments as Agent;
+      await Provider.of<Properties>(context, listen: false)
+          .getAgentProperties(agent!.id);
+      setState(() {
+        isLoading = false;
+      });
+      // TODO: implement didChangeDependencies
+      super.didChangeDependencies();
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
-    Agent agent = ModalRoute.of(context)!.settings.arguments as Agent;
-    var properties = Provider.of<Properties>(context, listen: false).properties;
+    var properties =
+        Provider.of<Properties>(context, listen: false).agentProperties;
     return Scaffold(
       backgroundColor: primaryColor,
       body: Container(
@@ -93,7 +120,7 @@ class AgentScreen extends StatelessWidget {
                           height: height(context) * 1,
                         ),
                         Text(
-                          agent.name,
+                          agent!.name,
                           style: TextStyle(
                               fontWeight: FontWeight.w600, fontSize: 17),
                         ),
@@ -101,7 +128,7 @@ class AgentScreen extends StatelessWidget {
                           height: height(context) * 0.5,
                         ),
                         Text(
-                          agent.email,
+                          agent!.email,
                           style: TextStyle(
                               fontWeight: FontWeight.w300, fontSize: 12),
                         ),
@@ -113,7 +140,7 @@ class AgentScreen extends StatelessWidget {
                           children: [
                             ContactButton(
                               onTap: () async {
-                                if (agent.phone == '') {
+                                if (agent!.phone == '') {
                                   showDialog(
                                       context: context,
                                       builder: (ctx) => CupertinoAlertDialog(
@@ -129,7 +156,7 @@ class AgentScreen extends StatelessWidget {
                                             ],
                                           ));
                                 } else {
-                                  await launch("tel://${agent.phone}");
+                                  await launch("tel://${agent!.phone}");
                                 }
                               },
                               icon: Icons.call,
@@ -139,7 +166,7 @@ class AgentScreen extends StatelessWidget {
                             ),
                             ContactButton(
                               onTap: () async {
-                                if (agent.phone == '') {
+                                if (agent!.phone == '') {
                                   showDialog(
                                       context: context,
                                       builder: (ctx) => CupertinoAlertDialog(
@@ -155,7 +182,7 @@ class AgentScreen extends StatelessWidget {
                                             ],
                                           ));
                                 } else {
-                                  await launch('https://wa.me/${agent.phone}');
+                                  await launch('https://wa.me/${agent!.phone}');
                                 }
                               },
                               icon: Icons.whatsapp,
@@ -177,25 +204,33 @@ class AgentScreen extends StatelessWidget {
                           height: height(context) * 1,
                         ),
                         Expanded(
-                          child: GridView.builder(
-                            gridDelegate:
-                                const SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 2,
-                              crossAxisSpacing: 5.0,
-                              mainAxisSpacing: 10.0,
-                            ),
-                            itemCount: 4,
-                            itemBuilder: (ctx, index) => InkWell(
-                              onTap: () {
-                                Navigator.of(context).pushNamed(
-                                    PropertyDetailScreen.routeName,
-                                    arguments: properties[index]);
-                              },
-                              child: PropertyWidget(
-                                property: properties[index],
-                              ),
-                            ),
-                          ),
+                          child: isLoading
+                              ? Center(
+                                  child: AdaptiveIndecator(color: primaryColor),
+                                )
+                              : properties.isEmpty
+                                  ? Center(
+                                      child: Text('No Properties to show'),
+                                    )
+                                  : GridView.builder(
+                                      gridDelegate:
+                                          const SliverGridDelegateWithFixedCrossAxisCount(
+                                        crossAxisCount: 2,
+                                        crossAxisSpacing: 5.0,
+                                        mainAxisSpacing: 10.0,
+                                      ),
+                                      itemCount: 4,
+                                      itemBuilder: (ctx, index) => InkWell(
+                                        onTap: () {
+                                          Navigator.of(context).pushNamed(
+                                              PropertyDetailScreen.routeName,
+                                              arguments: properties[index]);
+                                        },
+                                        child: PropertyWidget(
+                                          property: properties[index],
+                                        ),
+                                      ),
+                                    ),
                         ),
                       ],
                     ),

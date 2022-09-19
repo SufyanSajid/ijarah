@@ -308,7 +308,7 @@ class PropertyWidget extends StatelessWidget {
                   height: height(context) * 0.5,
                 ),
                 Text(
-                  property.price,
+                  '${property.price} PKR',
                   style: const TextStyle(
                       fontSize: 12, fontWeight: FontWeight.bold),
                 ),

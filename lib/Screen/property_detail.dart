@@ -17,7 +17,7 @@ class PropertyDetailScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var property = ModalRoute.of(context)!.settings.arguments as Property;
-    var properties = Provider.of<Properties>(context).properties;
+    var properties = Provider.of<Properties>(context).latestProperties;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: primaryColor,
