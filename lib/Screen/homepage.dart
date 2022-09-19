@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -66,7 +68,10 @@ class _HomepageState extends State<Homepage> {
         children: [
           Column(
             children: [
-              Padding(
+              Container(
+                margin: Platform.isAndroid
+                    ? EdgeInsets.only(top: 10)
+                    : EdgeInsets.zero,
                 padding: const EdgeInsets.symmetric(horizontal: 10.0),
                 child: Appbar(
                     height: height(context),

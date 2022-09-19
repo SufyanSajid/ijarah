@@ -45,6 +45,12 @@ dependencies:
   google_maps_flutter: ^2.2.0
   card_swiper: ^2.0.4
   html: ^0.15.0
+  flutter_launcher_icons: ^0.10.0
+
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "assets/images/logo_final.png"
 
 dev_dependencies:
   flutter_test:

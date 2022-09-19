@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 
 import '../Widget/appbar.dart';
@@ -14,16 +16,19 @@ class ContactScreen extends StatelessWidget {
           children: [
             Column(
               children: [
-                Padding(
+                Container(
+                  margin: Platform.isAndroid
+                      ? EdgeInsets.only(top: 10)
+                      : EdgeInsets.zero,
                   padding: const EdgeInsets.symmetric(horizontal: 10.0),
                   child: Appbar(
                       height: height(context),
                       width: width(context),
                       leading: IconButton(
-                        icon: const Icon(
+                        icon: Icon(
                           Icons.menu,
                           size: 25,
-                          color: Colors.white,
+                          color: primaryColor,
                         ),
                         onPressed: () {},
                       ),

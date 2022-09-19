@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:ijarah/Models/filters.dart';
@@ -91,16 +93,19 @@ class _FilterScreenState extends State<FilterScreen> {
             children: [
               Column(
                 children: [
-                  Padding(
+                  Container(
+                    margin: Platform.isAndroid
+                        ? const EdgeInsets.only(top: 10)
+                        : EdgeInsets.zero,
                     padding: const EdgeInsets.symmetric(horizontal: 10.0),
                     child: Appbar(
                         height: height(context),
                         width: width(context),
                         leading: IconButton(
-                          icon: const Icon(
+                          icon: Icon(
                             Icons.menu,
                             size: 25,
-                            color: Colors.white,
+                            color: primaryColor,
                           ),
                           onPressed: () {},
                         ),

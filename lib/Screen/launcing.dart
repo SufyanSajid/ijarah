@@ -79,7 +79,8 @@ class _NewLauncingScreenState extends State<NewLauncingScreen> {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
                   height: height(context) * 86,
                   alignment: Alignment.center,
                   width: width(context) * 100,
@@ -97,9 +98,6 @@ class _NewLauncingScreenState extends State<NewLauncingScreen> {
                       : Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            SizedBox(
-                              height: height(context) * 3,
-                            ),
                             const Text(
                               'New Launching',
                               style: TextStyle(

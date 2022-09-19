@@ -44,7 +44,7 @@ class MyApp extends StatelessWidget {
         ),
       ],
       child: MaterialApp(
-        title: 'Ijarah',
+        title: 'GotiJarah',
         theme: ThemeData(fontFamily: 'Calibri'),
         routes: {
           '/': (ctx) => SplashScreen(),

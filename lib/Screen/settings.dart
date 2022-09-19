@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:ijarah/Models/property.dart';
 import 'package:ijarah/Screen/homepage.dart';
@@ -20,16 +22,19 @@ class SettingScreen extends StatelessWidget {
           children: [
             Column(
               children: [
-                Padding(
+                Container(
+                  margin: Platform.isAndroid
+                      ? EdgeInsets.only(top: 10)
+                      : EdgeInsets.zero,
                   padding: const EdgeInsets.symmetric(horizontal: 10.0),
                   child: Appbar(
                     height: height(context),
                     width: width(context),
                     leading: IconButton(
-                      icon: const Icon(
+                      icon: Icon(
                         Icons.menu,
                         size: 25,
-                        color: Colors.white,
+                        color: primaryColor,
                       ),
                       onPressed: () {},
                     ),
@@ -40,9 +45,9 @@ class SettingScreen extends StatelessWidget {
                     )),
                     trailing: IconButton(
                       onPressed: () {},
-                      icon: const Icon(
+                      icon: Icon(
                         Icons.search,
-                        color: Colors.white,
+                        color: primaryColor,
                         size: 30,
                       ),
                     ),

@@ -57,7 +57,8 @@ class LatestScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
                   height: height(context) * 86,
                   width: width(context) * 100,
                   decoration: const BoxDecoration(
@@ -74,9 +75,6 @@ class LatestScreen extends StatelessWidget {
                       : Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            SizedBox(
-                              height: height(context) * 3,
-                            ),
                             const Text(
                               'Latest Properties',
                               style: TextStyle(

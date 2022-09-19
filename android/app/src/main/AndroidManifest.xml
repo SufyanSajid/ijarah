@@ -4,7 +4,7 @@
     
    <application
         android:label="ijarah"
-        android:name="${applicationName}"
+        android:name="Gotijarah"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"
