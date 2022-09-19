@@ -1,3 +1,4 @@
+import 'package:card_swiper/card_swiper.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -45,42 +46,50 @@ class PropertyDetailScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            ExtendedImage.network(
-              property.image,
-              cache: true,
-              width: width(context) * 100,
-              fit: BoxFit.cover,
+            SizedBox(
               height: height(context) * 32,
-            ),
-            Container(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 20,
-                vertical: 5,
-              ),
-              decoration: BoxDecoration(
-                color: Colors.grey.withOpacity(
-                  0.2,
-                ),
-              ),
-              child: InkWell(
-                onTap: () {
-                  Navigator.of(context).pushNamed(AgentScreen.routeName,
-                      arguments: property.agent);
-                },
-                child: ListTile(
-                  leading: CircleAvatar(
-                    backgroundColor: primaryColor,
-                    radius: 30,
-                  ),
-                  title: Text(property.agent.name),
-                  subtitle: const Text(
-                    'Property Owner',
-                    style: TextStyle(fontSize: 12),
-                  ),
-                  trailing: Contact(property: property),
-                ),
+              child: Swiper(
+                autoplay: true,
+                itemCount: property.image.length,
+                itemBuilder: ((context, index) => ExtendedImage.network(
+                      property.image.first,
+                      cache: true,
+                      width: width(context) * 100,
+                      fit: BoxFit.cover,
+                      height: height(context) * 32,
+                    )),
               ),
             ),
+            if (property.agent != null)
+              Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 20,
+                  vertical: 5,
+                ),
+                decoration: BoxDecoration(
+                  color: Colors.grey.withOpacity(
+                    0.2,
+                  ),
+                ),
+                child: InkWell(
+                  onTap: () {
+                    Navigator.of(context).pushNamed(AgentScreen.routeName,
+                        arguments: property.agent);
+                  },
+                  child: ListTile(
+                    leading: CircleAvatar(
+                      backgroundColor: primaryColor,
+                      radius: 30,
+                    ),
+                    title: Text(property.agent!.name),
+                    subtitle: const Text(
+                      'Property Owner',
+                      style: TextStyle(fontSize: 12),
+                    ),
+                    trailing: Contact(property: property),
+                  ),
+                ),
+              ),
             Container(
               padding: EdgeInsets.symmetric(vertical: 10, horizontal: 30),
               child: Row(
@@ -215,7 +224,7 @@ class PropertyDetailScreen extends StatelessWidget {
               ),
             ),
             Container(
-              margin: const EdgeInsets.symmetric(vertical: 40),
+              margin: const EdgeInsets.symmetric(vertical: 20),
               color: Colors.grey.withOpacity(0.5),
               height: 1,
               width: width(context) * 100,
@@ -280,7 +289,7 @@ class Contact extends StatelessWidget {
         children: [
           IconButton(
               onPressed: () async {
-                if (property.agent.phone == '') {
+                if (property.agent!.phone == '') {
                   showDialog(
                       context: context,
                       builder: (ctx) => CupertinoAlertDialog(
@@ -295,8 +304,8 @@ class Contact extends StatelessWidget {
                             ],
                           ));
                 } else {
-                  print(property.agent.phone);
-                  await launch("tel://${property.agent.phone}");
+                  print(property.agent!.phone);
+                  await launch("tel://${property.agent!.phone}");
                 }
               },
               icon: Icon(
@@ -306,7 +315,7 @@ class Contact extends StatelessWidget {
               )),
           IconButton(
               onPressed: () async {
-                if (property.agent.phone == '') {
+                if (property.agent!.phone == '') {
                   showDialog(
                       context: context,
                       builder: (ctx) => CupertinoAlertDialog(
@@ -321,7 +330,7 @@ class Contact extends StatelessWidget {
                             ],
                           ));
                 } else {
-                  await launch('https://wa.me/${property.agent.phone}');
+                  await launch('https://wa.me/${property.agent!.phone}');
                 }
               },
               icon: const Icon(

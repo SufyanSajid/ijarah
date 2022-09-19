@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:ijarah/Models/agent.dart';
+import 'package:html/parser.dart';
 
 import '../constant.dart';
 
@@ -25,14 +26,14 @@ class Property {
   String bed;
   String bath;
   String area;
-  String image;
+  List<String> image;
   String purpose;
   String address;
   String description;
   String date;
   String city;
   String phone;
-  Agent agent;
+  Agent? agent;
   List<Feature> features;
 
   Property({
@@ -49,7 +50,7 @@ class Property {
     required this.description,
     required this.image,
     required this.date,
-    required this.agent,
+    this.agent,
     required this.phone,
     required this.features,
   });
@@ -73,8 +74,9 @@ class Properties with ChangeNotifier {
           name: 'Sufyan Sajid',
           email: 'themssk@gmail.com',
           phone: '+923167550840'),
-      image:
-          'https://3.imimg.com/data3/XJ/AK/MY-13479662/property-buyer-500x500.png',
+      image: [
+        'https://3.imimg.com/data3/XJ/AK/MY-13479662/property-buyer-500x500.png',
+      ],
       features: [],
       date: '',
       city: '',
@@ -94,8 +96,9 @@ class Properties with ChangeNotifier {
       bed: '6',
       bath: '4',
       phone: '+923167550840',
-      image:
-          'https://3.imimg.com/data3/XJ/AK/MY-13479662/property-buyer-500x500.png',
+      image: [
+        'https://3.imimg.com/data3/XJ/AK/MY-13479662/property-buyer-500x500.png',
+      ],
       address: 'Sargodha Punjab',
       agent: Agent(
           id: '1',
@@ -118,8 +121,9 @@ class Properties with ChangeNotifier {
       city: '',
       bath: '2',
       phone: '+923167550840',
-      image:
-          'https://3.imimg.com/data3/XJ/AK/MY-13479662/property-buyer-500x500.png',
+      image: [
+        'https://3.imimg.com/data3/XJ/AK/MY-13479662/property-buyer-500x500.png',
+      ],
       address: 'Lahore Punjab',
       agent: Agent(
           id: '1',
@@ -142,8 +146,9 @@ class Properties with ChangeNotifier {
       city: '',
       bath: '2',
       phone: '+923167550840',
-      image:
-          'https://3.imimg.com/data3/XJ/AK/MY-13479662/property-buyer-500x500.png',
+      image: [
+        'https://3.imimg.com/data3/XJ/AK/MY-13479662/property-buyer-500x500.png',
+      ],
       address: 'Karachi Sindh',
       agent: Agent(
           id: '1',
@@ -166,8 +171,9 @@ class Properties with ChangeNotifier {
       city: '',
       bath: '2',
       phone: '+923167550840',
-      image:
-          'https://3.imimg.com/data3/XJ/AK/MY-13479662/property-buyer-500x500.png',
+      image: [
+        'https://3.imimg.com/data3/XJ/AK/MY-13479662/property-buyer-500x500.png',
+      ],
       address: 'Sargodha Punjab',
       agent: Agent(
           id: '1',
@@ -190,8 +196,9 @@ class Properties with ChangeNotifier {
       date: '',
       city: '',
       phone: '+923167550840',
-      image:
-          'https://3.imimg.com/data3/XJ/AK/MY-13479662/property-buyer-500x500.png',
+      image: [
+        'https://3.imimg.com/data3/XJ/AK/MY-13479662/property-buyer-500x500.png',
+      ],
       address: 'Sargodha Punjab',
       agent: Agent(
           id: '1',
@@ -214,8 +221,9 @@ class Properties with ChangeNotifier {
       date: '',
       city: '',
       phone: '+923167550840',
-      image:
-          'https://3.imimg.com/data3/XJ/AK/MY-13479662/property-buyer-500x500.png',
+      image: [
+        'https://3.imimg.com/data3/XJ/AK/MY-13479662/property-buyer-500x500.png',
+      ],
       address: 'Lahore Punjab',
       agent: Agent(
           id: '1',
@@ -238,8 +246,9 @@ class Properties with ChangeNotifier {
       city: '',
       bath: '2',
       phone: '+923167550840',
-      image:
-          'https://3.imimg.com/data3/XJ/AK/MY-13479662/property-buyer-500x500.png',
+      image: [
+        'https://3.imimg.com/data3/XJ/AK/MY-13479662/property-buyer-500x500.png',
+      ],
       address: 'Karachi Sindh',
       agent: Agent(
           id: '1',
@@ -267,6 +276,12 @@ class Properties with ChangeNotifier {
     return [..._latestProperties];
   }
 
+  List<Property> _filterProperties = [];
+
+  List<Property> get filterProperties {
+    return [..._filterProperties];
+  }
+
   List<String> _categories = [];
 
   List<String> get catgeories {
@@ -276,6 +291,13 @@ class Properties with ChangeNotifier {
   List<String> bannerUrls = [];
 
   String banner = '';
+  String _parseHtmlString(String htmlString) {
+    final document = parse(htmlString);
+    final String parsedString =
+        parse(document.body!.text).documentElement!.text;
+
+    return parsedString;
+  }
 
   Future<void> fetchAndSetProperties() async {
     List<Property> tempLaunch = [];
@@ -307,11 +329,23 @@ class Properties with ChangeNotifier {
           );
         });
         var user = prop['user'];
-        Agent tempAgent = Agent(
-            id: user['id'].toString(),
-            email: user['user_email'],
-            name: user['user_nicename'],
-            phone: prop['phone']);
+        Agent? tempAgent;
+        if (user != null) {
+          tempAgent = Agent(
+              id: user['id'].toString(),
+              email: user['user_email'],
+              name: user['user_nicename'],
+              phone: prop['phone']);
+        } else {
+          tempAgent = null;
+        }
+        List<String> imageUrls = [];
+        var images = prop['image'] as List<dynamic>;
+        images.forEach((img) {
+          imageUrls.add(img['guid']);
+        });
+        var descrip = _parseHtmlString(prop['description']);
+
         tempLaunch.add(Property(
           id: prop['id'].toString(),
           name: prop['post_title'],
@@ -323,11 +357,11 @@ class Properties with ChangeNotifier {
           bath: prop['bathrooms'],
           city: prop['city'],
           address: prop['address'],
-          description: prop['description'],
-          image: prop['image'],
+          description: descrip,
+          image: imageUrls,
           date: prop['post_date'],
           phone: prop['phone'],
-          agent: tempAgent,
+          agent: tempAgent != null ? tempAgent : null,
           features: tempFeatures,
         ));
       });
@@ -348,11 +382,22 @@ class Properties with ChangeNotifier {
           );
         });
         var user = prop['user'];
-        Agent tempAgent = Agent(
-            id: user['id'].toString(),
-            email: user['user_email'],
-            name: user['user_nicename'],
-            phone: prop['phone']);
+        Agent? tempAgent;
+        if (user != null) {
+          tempAgent = Agent(
+              id: user['id'].toString(),
+              email: user['user_email'],
+              name: user['user_nicename'],
+              phone: prop['phone']);
+        } else {
+          tempAgent = null;
+        }
+        List<String> imageUrls = [];
+        var images = prop['image'] as List<dynamic>;
+        images.forEach((img) {
+          imageUrls.add(img['guid']);
+        });
+        var descrip = _parseHtmlString(prop['description']);
         tempLatest.add(Property(
           id: prop['id'].toString(),
           name: prop['post_title'],
@@ -364,8 +409,8 @@ class Properties with ChangeNotifier {
           bath: prop['bathrooms'],
           city: prop['city'],
           address: prop['address'],
-          description: prop['description'],
-          image: prop['image'],
+          description: descrip,
+          image: imageUrls,
           date: prop['post_date'],
           phone: prop['phone'],
           agent: tempAgent,
@@ -388,6 +433,85 @@ class Properties with ChangeNotifier {
       //latest end
     } else {
       print('error in fetch and set properties');
+    }
+  }
+
+  Future<void> getFilterProperties({
+    required String purpose,
+    required String city,
+    required String type,
+    required String minPrice,
+    required String maxPrice,
+  }) async {
+    _filterProperties = [];
+    List<Property> tempFilterProps = [];
+    final url = Uri.parse('${baseUrl}filter-properties');
+
+    var response = await http.post(url, body: {
+      'purpose': purpose,
+      'city': city,
+      'types': type,
+      'min_price': minPrice,
+      'max_price': maxPrice,
+    });
+
+    print(response.body);
+    var extractedResponse = json.decode(response.body);
+    if (extractedResponse['success'] == true) {
+      var data = extractedResponse['data'] as List<dynamic>;
+      data.forEach((prop) {
+        List<Feature> tempFeatures = [];
+        var features = prop['property_feature'] as List<dynamic>;
+        features.forEach((feature) {
+          tempFeatures.add(
+            Feature(
+              id: feature['term_id'],
+              name: feature['name'],
+            ),
+          );
+        });
+        var user = prop['user'];
+        Agent? tempAgent;
+        if (user != null) {
+          tempAgent = Agent(
+              id: user['id'].toString(),
+              email: user['user_email'],
+              name: user['user_nicename'],
+              phone: prop['phone']);
+        } else {
+          tempAgent = null;
+        }
+        List<String> imageUrls = [];
+        var images = prop['image'] as List<dynamic>;
+        images.forEach((img) {
+          imageUrls.add(img['guid']);
+        });
+        var descrip = _parseHtmlString(prop['description']);
+        tempFilterProps.add(Property(
+          id: prop['id'].toString(),
+          name: prop['post_title'],
+          area: prop['size'] == null ? '' : prop['size'],
+          purpose: prop['purpose'],
+          type: prop['property_type'] == null ? '' : prop['property_type'],
+          price: prop['price'],
+          bed: prop['bedrooms'],
+          bath: prop['bathrooms'],
+          city: prop['city'],
+          address: prop['address'],
+          description: descrip,
+          image: imageUrls,
+          date: prop['post_date'],
+          phone: prop['phone'],
+          agent: tempAgent != null ? tempAgent : null,
+          features: tempFeatures,
+        ));
+
+        _filterProperties = tempFilterProps;
+        print(_filterProperties.length);
+        notifyListeners();
+      });
+    } else {
+      print('error in fetching filter properties');
     }
   }
 }

@@ -32,6 +32,9 @@ class Filters with ChangeNotifier {
   bool isFilter = false;
 
   Future<void> getFilterValues() async {
+    if (filter != null) {
+      return;
+    }
     List<String> tempBed = [];
     List<String> tempBath = [];
     List<String> tempCities = [];
@@ -43,6 +46,7 @@ class Filters with ChangeNotifier {
     var extractedResponse = json.decode(response.body);
 
     if (extractedResponse['success'] == true) {
+      isFilter = true;
       var data = extractedResponse['data'];
       //bed
       var bed = data['bedrooms'] as List<dynamic>;
@@ -86,7 +90,7 @@ class Filters with ChangeNotifier {
         propertyType: tempType,
         purpose: tempPurpose,
       );
-      isFilter = true;
+
       notifyListeners();
     } else {
       print('error in getting filters');

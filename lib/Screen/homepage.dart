@@ -292,7 +292,7 @@ class PropertyWidget extends StatelessWidget {
           Expanded(
             flex: 10,
             child: ExtendedImage.network(
-              property.image,
+              property.image.first,
               cache: true,
               width: width(context) * 50,
               fit: BoxFit.cover,
