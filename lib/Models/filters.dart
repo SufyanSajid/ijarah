@@ -31,10 +31,24 @@ class Filters with ChangeNotifier {
 
   bool isFilter = false;
 
+  Map<String, dynamic> filterValues = {
+    'city': 'Karachi',
+    'purpose': 'Rentals',
+    'propType': 'Apartments',
+    'minPrice': 0.0,
+    'maxPrice': 0.0,
+  };
+
+  void setFilterValues({required String key, required dynamic value}) {
+    filterValues[key] = value;
+    notifyListeners();
+  }
+
   Future<void> getFilterValues() async {
     if (filter != null) {
       return;
     }
+
     List<String> tempBed = [];
     List<String> tempBath = [];
     List<String> tempCities = [];
@@ -90,6 +104,9 @@ class Filters with ChangeNotifier {
         propertyType: tempType,
         purpose: tempPurpose,
       );
+
+      filterValues['minPrice'] = double.parse(data['min_price']);
+      filterValues['maxPrice'] = double.parse(data['max_price']);
 
       notifyListeners();
     } else {

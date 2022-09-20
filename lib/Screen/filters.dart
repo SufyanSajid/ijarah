@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_launcher_icons/utils.dart';
 import 'package:ijarah/Models/filters.dart';
 import 'package:ijarah/Models/property.dart';
 import 'package:ijarah/Screen/filterprop.dart';
@@ -21,44 +22,42 @@ class FilterScreen extends StatefulWidget {
 }
 
 class _FilterScreenState extends State<FilterScreen> {
-  bool isFirst = false;
+  bool isFirst = true;
   bool isLoading = false;
   Filter? filter;
-  String selectedCity = 'Karachi';
-  String propType = 'Apartments';
+  String selectedCity = '';
+  String propType = '';
   double maxPrice = 0.0;
   double minPrice = 0.0;
   var _startingPriceController = TextEditingController();
   var _endPriceController = TextEditingController();
-  String purpose = 'Rentals';
+  String purpose = '';
   bool fetching = false;
+  RangeValues? _currentRangeValues;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
 
   @override
   void didChangeDependencies() async {
     // if (Provider.of<Filters>(context).isFilter == false) {
-    setState(() {
-      isLoading = true;
-    });
-    await Provider.of<Filters>(context, listen: false).getFilterValues();
-    filter = Provider.of<Filters>(context, listen: false).filter;
-    maxPrice = double.parse(filter!.maxPrice);
-    minPrice = double.parse(filter!.minPrice);
-    _startingPriceController = TextEditingController(text: minPrice.toString());
-    _endPriceController = TextEditingController(text: maxPrice.toString());
+    if (isFirst) {
+      isFirst = false;
+      setState(() {
+        isLoading = true;
+      });
+      await Provider.of<Filters>(context, listen: false).getFilterValues();
 
-    setState(() {
-      isLoading = false;
-    });
-    // }
+      setState(() {
+        isLoading = false;
+      });
+    }
     super.didChangeDependencies();
   }
 
   void submit() async {
-    print(purpose);
-    print(selectedCity);
-    print(propType);
-    print(_startingPriceController.text.trim());
-    print(_endPriceController.text.trim());
     setState(() {
       fetching = true;
     });
@@ -69,21 +68,36 @@ class _FilterScreenState extends State<FilterScreen> {
       minPrice: _startingPriceController.text.trim(),
       maxPrice: _endPriceController.text.trim(),
     );
+
     setState(
       () {
         fetching = false;
       },
     );
-    print('aga jaaa');
 
     Navigator.of(context).pushNamed(FilterPropertyScreen.routeName);
   }
 
   @override
   Widget build(BuildContext context) {
-    RangeValues _currentRangeValues = RangeValues(minPrice, maxPrice);
-    // RangeValues _currentRangeValues = RangeValues(
-    //     double.parse(filter!.minPrice), double.parse(filter!.minPrice));
+    filter = Provider.of<Filters>(context, listen: false).filter;
+    var filterValues = Provider.of<Filters>(context).filterValues;
+
+    if (filter != null && maxPrice == 0) {
+      maxPrice = double.parse(filter!.maxPrice);
+      minPrice = double.parse(filter!.minPrice);
+      _startingPriceController =
+          TextEditingController(text: minPrice.toString());
+      _endPriceController = TextEditingController(text: maxPrice.toString());
+      _currentRangeValues = RangeValues(minPrice, maxPrice);
+    }
+
+    selectedCity = filterValues['city'];
+    purpose = filterValues['purpose'];
+    propType = filterValues['propType'];
+    minPrice = filterValues['minPrice'];
+    maxPrice = filterValues['maxPrice'];
+
     return Scaffold(
       backgroundColor: primaryColor,
       body: Container(
@@ -195,13 +209,22 @@ class _FilterScreenState extends State<FilterScreen> {
                                       const Icon(Icons.check_circle_outline),
                                   title: const Text('I want to'),
                                   trailing: PurposeBox(
+                                    selectedIndex: purpose == 'Rentals' ? 0 : 1,
                                     onChanged: (value) {
                                       if (value == 0) {
-                                        purpose = 'Rentals';
+                                        Provider.of<Filters>(context,
+                                                listen: false)
+                                            .setFilterValues(
+                                                key: 'purpose',
+                                                value: 'Rentals');
                                       } else {
-                                        purpose = 'Buy';
+                                        Provider.of<Filters>(context,
+                                                listen: false)
+                                            .setFilterValues(
+                                          key: 'purpose',
+                                          value: 'Buy',
+                                        );
                                       }
-                                      print(purpose);
                                     },
                                   ),
                                 ),
@@ -355,11 +378,17 @@ class _FilterScreenState extends State<FilterScreen> {
                                       itemCount: filter!.propertyType.length,
                                       itemBuilder: (ctx, index) => InkWell(
                                         onTap: () {
-                                          setState(() {
-                                            propType =
-                                                filter!.propertyType[index];
-                                            print(propType);
-                                          });
+                                          // setState(() {
+                                          //   propType =
+                                          //       filter!.propertyType[index];
+                                          //   print(propType);
+                                          // });
+                                          Provider.of<Filters>(context,
+                                                  listen: false)
+                                              .setFilterValues(
+                                                  key: 'propType',
+                                                  value: filter!
+                                                      .propertyType[index]);
                                         },
                                         child: Container(
                                           decoration: BoxDecoration(
@@ -411,9 +440,21 @@ class _FilterScreenState extends State<FilterScreen> {
                                     Heading(
                                         icon: Icons.sell_outlined,
                                         title: 'Price Range'),
-                                    CustomDropDown(
-                                        onChanged: (value) {},
-                                        items: ['PKR', 'USD'])
+                                    Container(
+                                      margin: EdgeInsets.only(right: 10),
+                                      child: Text(
+                                        'PKR',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 15),
+                                      ),
+                                    ),
+
+                                    // CustomDropDown(
+                                    //     onChanged: (value) {},
+                                    //     items: [
+                                    //       'PKR',
+                                    //     ])
                                   ],
                                 ),
                                 SizedBox(
@@ -431,6 +472,14 @@ class _FilterScreenState extends State<FilterScreen> {
                                                 BorderRadius.circular(5)),
                                         child: TextField(
                                           controller: _startingPriceController,
+                                          onChanged: (value) {
+                                            double v = double.parse(
+                                                _startingPriceController.text);
+                                            Provider.of<Filters>(context,
+                                                    listen: false)
+                                                .setFilterValues(
+                                                    key: 'minPrice', value: v);
+                                          },
                                           decoration: InputDecoration(
                                             hintText: '0',
                                             hintStyle:
@@ -479,6 +528,14 @@ class _FilterScreenState extends State<FilterScreen> {
                                                 BorderRadius.circular(5)),
                                         child: TextField(
                                           controller: _endPriceController,
+                                          onChanged: (value) {
+                                            double v = double.parse(
+                                                _startingPriceController.text);
+                                            Provider.of<Filters>(context,
+                                                    listen: false)
+                                                .setFilterValues(
+                                                    key: 'maxPrice', value: v);
+                                          },
                                           decoration: InputDecoration(
                                             hintText: 'Any',
                                             hintStyle:
@@ -516,13 +573,13 @@ class _FilterScreenState extends State<FilterScreen> {
                                 StatefulBuilder(
                                   builder: (context, setState) => RangeSlider(
                                     activeColor: primaryColor,
-                                    values: _currentRangeValues,
+                                    values: _currentRangeValues!,
                                     max: maxPrice,
                                     labels: RangeLabels(
-                                      _currentRangeValues.start
+                                      _currentRangeValues!.start
                                           .round()
                                           .toString(),
-                                      _currentRangeValues.end
+                                      _currentRangeValues!.end
                                           .round()
                                           .toString(),
                                     ),
@@ -551,7 +608,18 @@ class _FilterScreenState extends State<FilterScreen> {
                                       MainAxisAlignment.spaceBetween,
                                   children: [
                                     TextButton(
-                                        onPressed: () {},
+                                        onPressed: () {
+                                          setState(() {
+                                            selectedCity = 'Karachi';
+                                            propType = 'Apartments';
+                                            _startingPriceController.text =
+                                                minPrice.toString();
+                                            _endPriceController.text =
+                                                maxPrice.toString();
+                                            _currentRangeValues =
+                                                RangeValues(minPrice, maxPrice);
+                                          });
+                                        },
                                         child: const Text(
                                           'Clear All',
                                           style: TextStyle(color: Colors.grey),
@@ -565,7 +633,7 @@ class _FilterScreenState extends State<FilterScreen> {
                                         onPressed: submit,
                                         child: Text(fetching
                                             ? 'Searching...'
-                                            : 'Save Changes'))
+                                            : 'Search'))
                                   ],
                                 ),
                                 SizedBox(
@@ -621,17 +689,20 @@ class PurposeBox extends StatefulWidget {
   PurposeBox({
     super.key,
     required this.onChanged,
+    required this.selectedIndex,
   });
 
   Function onChanged;
+  int selectedIndex;
   @override
   State<PurposeBox> createState() => _PurposeBoxState();
 }
 
 class _PurposeBoxState extends State<PurposeBox> {
-  int index = 0;
   @override
   Widget build(BuildContext context) {
+    int index = widget.selectedIndex;
+    print('yeh sa selected Index $index');
     return Container(
       height: height(context) * 5.5,
       width: width(context) * 34,
@@ -738,12 +809,10 @@ class _CityBlockState extends State<CityBlock> {
                                 .map(
                                   (city) => GestureDetector(
                                     onTap: () {
-                                      setState(() {
-                                        widget.selectedCity = city;
-                                      });
-                                      setState(
-                                        () {},
-                                      );
+                                      Provider.of<Filters>(context,
+                                              listen: false)
+                                          .setFilterValues(
+                                              key: 'city', value: city);
                                       Navigator.of(context).pop();
                                     },
                                     child: Container(

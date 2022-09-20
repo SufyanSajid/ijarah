@@ -59,7 +59,8 @@ class SettingScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
                   height: height(context) * 79,
                   width: width(context) * 100,
                   decoration: const BoxDecoration(
@@ -71,11 +72,8 @@ class SettingScreen extends StatelessWidget {
                   ),
                   child: Column(
                     children: [
-                      SizedBox(
-                        height: height(context) * 4,
-                      ),
                       CircleAvatar(
-                        radius: 60,
+                        radius: 58,
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(100),
                           child: Image.asset(
@@ -101,7 +99,7 @@ class SettingScreen extends StatelessWidget {
                             fontWeight: FontWeight.w300, fontSize: 12),
                       ),
                       SizedBox(
-                        height: height(context) * 2,
+                        height: height(context) * 1.5,
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -113,7 +111,7 @@ class SettingScreen extends StatelessWidget {
                             icon: Icons.call,
                           ),
                           SizedBox(
-                            width: width(context) * 2,
+                            width: width(context) * 1.5,
                           ),
                           ContactButton(
                             onTap: () async {
@@ -135,7 +133,7 @@ class SettingScreen extends StatelessWidget {
                         ),
                       ),
                       SizedBox(
-                        height: height(context) * 1,
+                        height: height(context) * 0.5,
                       ),
                       Expanded(
                         child: GridView.builder(

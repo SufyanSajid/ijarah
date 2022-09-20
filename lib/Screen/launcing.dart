@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:ijarah/Models/appdata.dart';
 import 'package:ijarah/Models/property.dart';
 import 'package:ijarah/Screen/homepage.dart';
 import 'package:ijarah/Screen/property_detail.dart';
@@ -44,7 +47,10 @@ class _NewLauncingScreenState extends State<NewLauncingScreen> {
           children: [
             Column(
               children: [
-                Padding(
+                Container(
+                  margin: Platform.isAndroid
+                      ? EdgeInsets.only(top: 10)
+                      : EdgeInsets.zero,
                   padding: const EdgeInsets.symmetric(horizontal: 10.0),
                   child: Appbar(
                     height: height(context),
@@ -65,7 +71,10 @@ class _NewLauncingScreenState extends State<NewLauncingScreen> {
                       style: TextStyle(color: Colors.white, fontSize: 24),
                     )),
                     trailing: IconButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Provider.of<App>(context, listen: false).setIndex(1);
+                        Navigator.of(context).pop();
+                      },
                       icon: const Icon(
                         Icons.search,
                         color: Colors.white,

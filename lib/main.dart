@@ -47,7 +47,7 @@ class MyApp extends StatelessWidget {
         title: 'GotiJarah',
         theme: ThemeData(fontFamily: 'Calibri'),
         routes: {
-          '/': (ctx) => SplashScreen(),
+          '/': (ctx) => Homepage(),
           WelComeScreen.routeName: (ctx) => const WelComeScreen(),
           OnBoardingScreen.routeName: (ctx) => OnBoardingScreen(),
           LoginScreen.routeName: (ctx) => LoginScreen(),

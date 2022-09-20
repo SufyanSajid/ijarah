@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:card_swiper/card_swiper.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/cupertino.dart';
@@ -6,10 +8,13 @@ import 'package:flutter_svg/svg.dart';
 import 'package:ijarah/Models/property.dart';
 import 'package:ijarah/Screen/agentscren.dart';
 import 'package:ijarah/Screen/homepage.dart';
+import 'package:ijarah/Widget/bottom2.dart';
+import 'package:ijarah/Widget/bottombar.dart';
 import 'package:ijarah/constant.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../Models/appdata.dart';
 import '../Widget/appbar.dart';
 
 class PropertyDetailScreen extends StatelessWidget {
@@ -20,14 +25,19 @@ class PropertyDetailScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     var property = ModalRoute.of(context)!.settings.arguments as Property;
     var properties = Provider.of<Properties>(context).latestProperties;
+    var selectedIndex = Provider.of<App>(context).bottomBarIndex;
     return Scaffold(
+      bottomNavigationBar: Bottom2(selectedIndex: selectedIndex),
       backgroundColor: primaryColor,
       body: Stack(
         children: [
           SafeArea(
             child: Column(
               children: [
-                Padding(
+                Container(
+                  margin: Platform.isAndroid
+                      ? EdgeInsets.only(top: 10)
+                      : EdgeInsets.zero,
                   padding: const EdgeInsets.symmetric(horizontal: 10.0),
                   child: Appbar(
                     height: height(context),
@@ -54,8 +64,10 @@ class PropertyDetailScreen extends StatelessWidget {
                           property.address.isEmpty
                               ? 'Address'
                               : property.address,
+                          maxLines: 1,
                           style: const TextStyle(
                               color: Colors.white,
+                              overflow: TextOverflow.ellipsis,
                               fontSize: 16,
                               fontWeight: FontWeight.w300),
                         ),
@@ -77,7 +89,7 @@ class PropertyDetailScreen extends StatelessWidget {
             children: [
               Container(
                 color: Colors.white,
-                height: height(context) * 86,
+                height: height(context) * 79,
                 child: SingleChildScrollView(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -86,10 +98,14 @@ class PropertyDetailScreen extends StatelessWidget {
                         height: height(context) * 32,
                         child: Swiper(
                           autoplay: true,
-                          itemCount: property.image.length,
+                          itemCount: property.image.length == 0
+                              ? 1
+                              : property.image.length,
                           itemBuilder: ((context, index) =>
                               ExtendedImage.network(
-                                property.image.first,
+                                property.image.isEmpty
+                                    ? 'https://peacehumanity.org/wp-content/uploads/2021/10/placeholder-236.png'
+                                    : property.image.first,
                                 cache: true,
                                 width: width(context) * 100,
                                 fit: BoxFit.cover,
@@ -118,6 +134,10 @@ class PropertyDetailScreen extends StatelessWidget {
                               leading: CircleAvatar(
                                 backgroundColor: primaryColor,
                                 radius: 30,
+                                child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(30),
+                                    child: Image.asset(
+                                        'assets/images/person22.jpeg')),
                               ),
                               title: Text(property.agent!.name),
                               subtitle: const Text(
@@ -158,7 +178,7 @@ class PropertyDetailScreen extends StatelessWidget {
                         ),
                       ),
                       SizedBox(
-                        height: height(context) * 2,
+                        height: height(context) * 1,
                       ),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 20),

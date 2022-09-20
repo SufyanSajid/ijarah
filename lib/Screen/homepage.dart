@@ -297,7 +297,9 @@ class PropertyWidget extends StatelessWidget {
           Expanded(
             flex: 10,
             child: ExtendedImage.network(
-              property.image.first,
+              property.image.isEmpty
+                  ? 'https://peacehumanity.org/wp-content/uploads/2021/10/placeholder-236.png'
+                  : property.image.first,
               cache: true,
               width: width(context) * 50,
               fit: BoxFit.cover,
@@ -313,7 +315,7 @@ class PropertyWidget extends StatelessWidget {
                   height: height(context) * 0.5,
                 ),
                 Text(
-                  '${property.price} PKR',
+                  'PKR ${property.price}',
                   style: const TextStyle(
                       fontSize: 12, fontWeight: FontWeight.bold),
                 ),

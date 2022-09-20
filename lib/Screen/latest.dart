@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:ijarah/Models/property.dart';
 import 'package:ijarah/Screen/homepage.dart';
@@ -5,6 +7,7 @@ import 'package:ijarah/Screen/property_detail.dart';
 import 'package:ijarah/constant.dart';
 import 'package:provider/provider.dart';
 
+import '../Models/appdata.dart';
 import '../Widget/appbar.dart';
 
 class LatestScreen extends StatelessWidget {
@@ -22,7 +25,10 @@ class LatestScreen extends StatelessWidget {
           children: [
             Column(
               children: [
-                Padding(
+                Container(
+                  margin: Platform.isAndroid
+                      ? EdgeInsets.only(top: 10)
+                      : EdgeInsets.zero,
                   padding: const EdgeInsets.symmetric(horizontal: 10.0),
                   child: Appbar(
                     height: height(context),
@@ -43,7 +49,10 @@ class LatestScreen extends StatelessWidget {
                       style: TextStyle(color: Colors.white, fontSize: 24),
                     )),
                     trailing: IconButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Provider.of<App>(context, listen: false).setIndex(1);
+                        Navigator.of(context).pop();
+                      },
                       icon: const Icon(
                         Icons.search,
                         color: Colors.white,
@@ -69,7 +78,7 @@ class LatestScreen extends StatelessWidget {
                     ),
                   ),
                   child: properties.isEmpty
-                      ? Center(
+                      ? const Center(
                           child: Text('No Properties to show'),
                         )
                       : Column(
