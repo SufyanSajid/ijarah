@@ -139,7 +139,12 @@ class PropertyDetailScreen extends StatelessWidget {
                                     child: Image.asset(
                                         'assets/images/person22.jpeg')),
                               ),
-                              title: Text(property.agent!.name),
+                              title: FittedBox(
+                                child: Text(
+                                  property.agent!.name,
+                                  maxLines: 1,
+                                ),
+                              ),
                               subtitle: const Text(
                                 'Property Owner',
                                 style: TextStyle(fontSize: 12),

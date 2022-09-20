@@ -72,8 +72,8 @@ class _Bottom2State extends State<Bottom2> {
           ),
           IconButton(
             onPressed: () {
-              Provider.of<App>(context, listen: false).setIndex(3);
-              Navigator.of(context).pushNamed(Homepage.routeName);
+              // Provider.of<App>(context, listen: false).setIndex(3);
+              // Navigator.of(context).pushNamed(Homepage.routeName);
             },
             icon: Icon(
               widget.selectedIndex == 3

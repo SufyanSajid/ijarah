@@ -111,10 +111,14 @@ class _LatestScreenState extends State<LatestScreen> {
                       : Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const Text(
-                              'Latest Properties',
-                              style: TextStyle(
-                                  fontSize: 20, fontWeight: FontWeight.w600),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 8.0),
+                              child: Text(
+                                type == 'All' ? 'Latest' : type,
+                                style: const TextStyle(
+                                    fontSize: 20, fontWeight: FontWeight.w600),
+                              ),
                             ),
                             SizedBox(
                               height: height(context) * 1.5,

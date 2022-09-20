@@ -68,7 +68,7 @@ class _CustomBottomBarState extends State<CustomBottomBar> {
           ),
           IconButton(
             onPressed: () {
-              Provider.of<App>(context, listen: false).setIndex(3);
+              // Provider.of<App>(context, listen: false).setIndex(3);
             },
             icon: Icon(
               widget.selectedIndex == 3

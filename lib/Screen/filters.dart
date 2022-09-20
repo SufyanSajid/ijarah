@@ -87,8 +87,9 @@ class _FilterScreenState extends State<FilterScreen> {
       maxPrice = double.parse(filter!.maxPrice);
       minPrice = double.parse(filter!.minPrice);
       _startingPriceController =
-          TextEditingController(text: minPrice.toString());
-      _endPriceController = TextEditingController(text: maxPrice.toString());
+          TextEditingController(text: minPrice.toStringAsFixed(0));
+      _endPriceController =
+          TextEditingController(text: maxPrice.toStringAsFixed(0));
       _currentRangeValues = RangeValues(minPrice, maxPrice);
     }
 
@@ -587,10 +588,10 @@ class _FilterScreenState extends State<FilterScreen> {
                                       setState(() {
                                         _startingPriceController.text = values
                                             .start
-                                            .toStringAsFixed(2)
+                                            .toStringAsFixed(0)
                                             .toString();
                                         _endPriceController.text = values.end
-                                            .toStringAsFixed(2)
+                                            .toStringAsFixed(0)
                                             .toString();
                                         _currentRangeValues = values;
                                       });

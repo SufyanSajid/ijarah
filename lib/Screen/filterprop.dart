@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:ijarah/Models/property.dart';
 import 'package:ijarah/Screen/homepage.dart';
@@ -43,7 +45,10 @@ class _FilterPropertyScreenState extends State<FilterPropertyScreen> {
           children: [
             Column(
               children: [
-                Padding(
+                Container(
+                  margin: Platform.isAndroid
+                      ? const EdgeInsets.only(top: 10)
+                      : EdgeInsets.zero,
                   padding: const EdgeInsets.symmetric(horizontal: 10.0),
                   child: Appbar(
                     height: height(context),
