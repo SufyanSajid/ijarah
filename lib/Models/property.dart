@@ -296,6 +296,12 @@ class Properties with ChangeNotifier {
 
   List<String> bannerUrls = [];
 
+  List<Property> getCatgeoryProperties(String propType) {
+    return _latestProperties
+        .where((prop) => prop.type.toLowerCase() == propType.toLowerCase())
+        .toList();
+  }
+
   String banner = '';
   String _parseHtmlString(String htmlString) {
     final document = parse(htmlString);
@@ -358,7 +364,7 @@ class Properties with ChangeNotifier {
           area: prop['size'] == null ? '' : prop['size'],
           purpose: prop['purpose'],
           type: prop['property_type'] == null ? '' : prop['property_type'],
-          price: prop['price'],
+          price: 'PKR ${prop['price']}',
           bed: prop['bedrooms'],
           bath: prop['bathrooms'],
           city: prop['city'],
@@ -410,7 +416,7 @@ class Properties with ChangeNotifier {
           area: prop['size'] == null ? '' : prop['size'],
           purpose: prop['purpose'],
           type: prop['property_type'] == null ? '' : prop['property_type'],
-          price: prop['price'],
+          price: 'PKR ${prop['price']}',
           bed: prop['bedrooms'],
           bath: prop['bathrooms'],
           city: prop['city'],
@@ -499,7 +505,7 @@ class Properties with ChangeNotifier {
           area: prop['size'] == null ? '' : prop['size'],
           purpose: prop['purpose'],
           type: prop['property_type'] == null ? '' : prop['property_type'],
-          price: prop['price'],
+          price: 'PKR ${prop['price']}',
           bed: prop['bedrooms'],
           bath: prop['bathrooms'],
           city: prop['city'],
@@ -565,7 +571,7 @@ class Properties with ChangeNotifier {
           area: prop['size'] == null ? '' : prop['size'],
           purpose: prop['purpose'],
           type: prop['property_type'] == null ? '' : prop['property_type'],
-          price: prop['price'],
+          price: 'PKR ${prop['price']}',
           bed: prop['bedrooms'],
           bath: prop['bathrooms'],
           city: prop['city'],

@@ -10,13 +10,40 @@ import 'package:provider/provider.dart';
 import '../Models/appdata.dart';
 import '../Widget/appbar.dart';
 
-class LatestScreen extends StatelessWidget {
+class LatestScreen extends StatefulWidget {
   static const routeName = 'latest';
   const LatestScreen({super.key});
 
   @override
+  State<LatestScreen> createState() => _LatestScreenState();
+}
+
+class _LatestScreenState extends State<LatestScreen> {
+  bool isFirst = true;
+  @override
+  void didChangeDependencies() {
+    if (isFirst) {
+      isFirst = false;
+    }
+    // TODO: implement didChangeDependencies
+    super.didChangeDependencies();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    var properties = Provider.of<Properties>(context).latestProperties;
+    List<Property> properties;
+    String type = ModalRoute.of(context)!.settings.arguments as String;
+    if (type == 'All') {
+      print('all');
+      properties = Provider.of<Properties>(context).latestProperties;
+      print(properties.length);
+    } else {
+      print(type);
+      properties = Provider.of<Properties>(context, listen: false)
+          .getCatgeoryProperties(type);
+      print(properties.length);
+    }
+
     return Scaffold(
       backgroundColor: primaryColor,
       body: SafeArea(

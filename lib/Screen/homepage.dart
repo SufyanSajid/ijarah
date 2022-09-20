@@ -167,8 +167,9 @@ class _HomepageState extends State<Homepage> {
                       TitleRow(
                         title: 'Latest Properties',
                         onTap: () {
-                          Navigator.of(context)
-                              .pushNamed(LatestScreen.routeName);
+                          Navigator.of(context).pushNamed(
+                              LatestScreen.routeName,
+                              arguments: 'All');
                         },
                       ),
                       SizedBox(
@@ -199,15 +200,21 @@ class _HomepageState extends State<Homepage> {
                         height: height(context) * 1,
                       ),
                       SizedBox(
-                          height: height(context) * 8,
-                          child: ListView.builder(
-                            scrollDirection: Axis.horizontal,
-                            itemCount: categories.length,
-                            itemBuilder: (ctx, index) => QuickLink(
-                              svg: 'assets/images/dental.svg',
-                              title: categories[index],
-                            ),
-                          )),
+                        height: height(context) * 8,
+                        child: ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemCount: categories.length,
+                          itemBuilder: (ctx, index) => QuickLink(
+                            onTap: () {
+                              Navigator.of(context).pushNamed(
+                                  LatestScreen.routeName,
+                                  arguments: categories[index]);
+                            },
+                            svg: 'assets/images/dental.svg',
+                            title: categories[index],
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                 ),
@@ -239,32 +246,40 @@ class QuickLink extends StatelessWidget {
     Key? key,
     required this.svg,
     required this.title,
+    required this.onTap,
   }) : super(key: key);
   String svg;
   String title;
+  Function()? onTap;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: width(context) * 20,
-      margin: const EdgeInsets.only(right: 10),
-      decoration: BoxDecoration(
-        color: primaryColor,
-        borderRadius: BorderRadius.circular(5),
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          SvgPicture.asset(svg),
-          SizedBox(
-            height: height(context) * 0.2,
-          ),
-          Text(
-            title,
-            style: const TextStyle(
-                color: Colors.white, fontSize: 8, fontWeight: FontWeight.bold),
-          ),
-        ],
+    return InkWell(
+      onTap: onTap,
+      child: Container(
+        width: width(context) * 20,
+        margin: const EdgeInsets.only(right: 10),
+        decoration: BoxDecoration(
+          color: primaryColor,
+          borderRadius: BorderRadius.circular(5),
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            SvgPicture.asset(svg),
+            SizedBox(
+              height: height(context) * 0.2,
+            ),
+            Text(
+              title,
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 8,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -315,9 +330,11 @@ class PropertyWidget extends StatelessWidget {
                   height: height(context) * 0.5,
                 ),
                 Text(
-                  'PKR ${property.price}',
+                  property.price,
                   style: const TextStyle(
-                      fontSize: 12, fontWeight: FontWeight.bold),
+                    fontSize: 12,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
                 Text(
                   property.address,
@@ -344,14 +361,14 @@ class PropertyWidget extends StatelessWidget {
                       icon: Icons.area_chart,
                       value: property.area,
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 6,
                     ),
                     Attribute(
                       icon: Icons.bed,
                       value: property.bed,
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 5,
                     ),
                     Attribute(
