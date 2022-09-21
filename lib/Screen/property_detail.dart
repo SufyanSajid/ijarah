@@ -105,7 +105,7 @@ class PropertyDetailScreen extends StatelessWidget {
                               ExtendedImage.network(
                                 property.image.isEmpty
                                     ? 'https://peacehumanity.org/wp-content/uploads/2021/10/placeholder-236.png'
-                                    : property.image.first,
+                                    : property.image[index],
                                 cache: true,
                                 width: width(context) * 100,
                                 fit: BoxFit.cover,
@@ -136,18 +136,23 @@ class PropertyDetailScreen extends StatelessWidget {
                                 radius: 30,
                                 child: ClipRRect(
                                     borderRadius: BorderRadius.circular(30),
-                                    child: Image.asset(
-                                        'assets/images/person22.jpeg')),
+                                    child: property.agent!.image.isEmpty
+                                        ? Image.asset(
+                                            'assets/images/person22.jpeg')
+                                        : ExtendedImage.network(
+                                            property.agent!.image,
+                                            cache: true,
+                                          )),
                               ),
-                              title: FittedBox(
-                                child: Text(
-                                  property.agent!.name,
-                                  maxLines: 1,
-                                ),
+                              title: Text(
+                                property.agent!.name,
+                                style: TextStyle(
+                                    fontSize: 14, fontWeight: FontWeight.bold),
+                                maxLines: 1,
                               ),
                               subtitle: const Text(
                                 'Property Owner',
-                                style: TextStyle(fontSize: 12),
+                                style: TextStyle(fontSize: 11),
                               ),
                               trailing: Contact(property: property),
                             ),
