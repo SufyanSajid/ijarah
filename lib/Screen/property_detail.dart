@@ -141,6 +141,7 @@ class PropertyDetailScreen extends StatelessWidget {
                                             'assets/images/person22.jpeg')
                                         : ExtendedImage.network(
                                             property.agent!.image,
+                                            fit: BoxFit.cover,
                                             cache: true,
                                           )),
                               ),
